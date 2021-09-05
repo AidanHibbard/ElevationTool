@@ -5,7 +5,7 @@
       :options="{fields:['geometry', 'address_components']}"
     />
     <GmapMap
-    :zoom="10"
+    :zoom="mapZoom"
     :center="MapCenter"
     map-type-id="terrain"
     style="width: 100%; height: 500px;"
@@ -56,6 +56,7 @@ export default {
     return {
       markers: [],
       MapCenter: { lat: 20.716455, lng: -156.250807 },
+      mapZoom: 15,
       chartOptions: {
         chart: {
           title: 'Elevation change',
@@ -68,6 +69,7 @@ export default {
     // @params place = Geo object from autocomplete
     setPlace: function(place) {
       this.MapCenter = place.geometry.location
+      this.mapZoom = 12
     },
     // @params mce = Map Click Event
     addMarker: function(mce) {
