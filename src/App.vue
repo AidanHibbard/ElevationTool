@@ -7,6 +7,7 @@
     <GmapMap
     :zoom="10"
     :center="MapCenter"
+    map-type-id="terrain"
     style="width: 100%; height: 500px;"
     @click="addMarker"
     >
