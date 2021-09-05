@@ -1,4 +1,4 @@
-# Elevation App
+# Elevation Tool
 An open source app used to chart the elevation change over a 
 distance. Heavy lifting done by [vue-google-maps](https://github.com/xkjyeah/vue-google-maps)
 
@@ -9,7 +9,7 @@ If you make a notable change, refactor, or want to contribute anything else plea
 To setup:
 - Have [Node](https://nodejs.org/en/) installed
 - Create a google account (if you don't already have one) 
-- Get a maps API key following the [docs](https://developers.google.com/maps/documentation/javascript/get-api-key#creating-api-keys) or screenshots below
+- Get a maps API key following the [docs](https://developers.google.com/maps/documentation/javascript/get-api-key#creating-api-keys)
 - click on the green `code` dropdown on the github project page
 - Click download zip or fork the project if you're familiar with git
 - Extract the folder anywhere on your computer
