@@ -62,11 +62,7 @@ export default {
     return {
       markers: [],
       MapCenter: { lat: 20.716455, lng: -156.250807 },
-<<<<<<< Updated upstream
       mapZoom: 15,
-=======
-      mapZoom: 10,
->>>>>>> Stashed changes
       chartOptions: {
         chart: {
           title: 'Elevation change',
