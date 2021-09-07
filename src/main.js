@@ -7,7 +7,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: '',
+    key: 'YOUR_API_KEY',
     libraries: ['places', 'drawing', 'visualization', 'elevation']
   }
 })
