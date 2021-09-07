@@ -4,6 +4,12 @@
       @place_changed='setPlace'
       :options="{fields:['geometry', 'address_components']}"
     />
+    <button
+      class="clrBtn"
+      @click="clearMarkers"
+    >
+    Clear Markers
+    </button>
     <GmapMap
     :zoom="mapZoom"
     :center="MapCenter"
@@ -56,13 +62,17 @@ export default {
     return {
       markers: [],
       MapCenter: { lat: 20.716455, lng: -156.250807 },
+<<<<<<< Updated upstream
       mapZoom: 15,
+=======
+      mapZoom: 10,
+>>>>>>> Stashed changes
       chartOptions: {
         chart: {
           title: 'Elevation change',
           subtitles: 'Samples, Elevation'
         }
-      }
+      },
     }
   },
   methods: {
@@ -81,6 +91,10 @@ export default {
     deleteMarker: function(i) {
       this.markers.splice(i, 1)
     },
+    clearMarkers: function() {
+      this.markers = []
+      document.getElementById('total_distance').innerHTML = ''
+    }
   }
 }
 </script>
