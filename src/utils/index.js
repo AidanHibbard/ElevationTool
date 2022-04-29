@@ -30,13 +30,13 @@ function createTable(results) {
         prev = 8,
         portion,
         portion_length,
-        // highest el feet in the world
-        // First sample is always <
-        minEl = 29029, 
+        minEl, 
         maxEl = 0;
     portion_length = (distance * 1609) / (256/prev)
     // Create Columns expected as [0]
     dataTable.push(['Sample', 'Elevation', { role: 'style' }]);
+    // Set first elevation to check if rest are <
+    minEl = results[0].elevation;
     results.forEach((elSample, idx) => {
         if (elSample.elevation > maxEl) maxEl = elSample.elevation;
         if (elSample.elevation < minEl) minEl = elSample.elevation;
