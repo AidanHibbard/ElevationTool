@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <NavBar v-if="$route.name !== 'Get Started'" />
     <v-main>
       <router-view/>
     </v-main>
@@ -7,12 +8,15 @@
 </template>
 
 <script>
-
+import NavBar from '@/components/NavBar.vue'
 export default {
   name: 'App',
-
-  data: () => ({
-    //
-  }),
+  components: {
+    NavBar,
+  },
 }
 </script>
+
+<style>
+
+</style>

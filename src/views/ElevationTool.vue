@@ -1,9 +1,5 @@
 <template>
   <div id="container">
-    <GMapAutocomplete
-      placeholder="Enter a place"
-      @place_changed="setCenter"
-    />
     <button 
       @click="clearMarkers()"
     >
