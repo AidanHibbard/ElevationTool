@@ -13,7 +13,7 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
-  base: 'ElevationTool',
+  base: '/ElevationTool/',
   define: { 'process.env': {} },
   resolve: {
     alias: {
