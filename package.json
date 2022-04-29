@@ -1,44 +1,36 @@
 {
-  "name": "elevationapp",
-  "version": "0.1.0",
-  "private": true,
+  "name": "elevationtool",
+  "version": "0.0.1",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "vite preview",
+    "build": "vite build",
+    "test:unit": "vitest --environment jsdom",
+    "coverage": "vitest run --coverage --environment jsdom",
+    "dev": "vite",
+    "preview": "vite preview --port 5050"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11",
-    "vue-google-charts": "^0.3.3",
-    "vue2-google-maps": "^0.10.7"
+    "@fawmi/vue-google-maps": "^0.9.67",
+    "@mdi/font": "5.9.55",
+    "roboto-fontface": "*",
+    "vue": "^3.2.33",
+    "vue-router": "^4.0.14",
+    "vue3-googl-chart": "^0.0.1",
+    "vuetify": "^3.0.0-beta.0",
+    "vuex": "^4.0.2",
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vue/test-utils": "^2.0.0-rc.20",
+    "@vuetify/vite-plugin": "^1.0.0-alpha.0",
+    "c8": "^7.11.2",
+    "jsdom": "^19.0.0",
+    "sass": "^1.38.0",
+    "sass-loader": "^10.0.0",
+    "vite": "^2.9.5",
+    "vitest": "^0.9.3",
+    "vue-cli-plugin-vuetify": "~2.4.8",
+    "vuetify-loader": "^2.0.0-alpha.0"
+  }
 }

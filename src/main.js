@@ -1,24 +1,23 @@
-import Vue from 'vue'
-import App from './App.vue'
-import * as VueGoogleMaps from 'vue2-google-maps'
-import VueGoogleCharts from 'vue-google-charts'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import vuetify from './plugins/vuetify';
+import { loadFonts } from './plugins/webfontloader';
+import VueGoogleMaps from '@fawmi/vue-google-maps';
+import VueGoogleCharts from "vue3-googl-chart";
 
-Vue.config.productionTip = false
+loadFonts()
 
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'YOUR_API_KEY',
-    libraries: ['places', 'drawing', 'visualization', 'elevation']
-  }
-})
-Vue.use(VueGoogleCharts)
-
-let currentResults = {}
-let currentPath = []
-new Vue({
-  data: {
-    currentResults,
-    currentPath
-  },
-  render: h => h(App),
-}).$mount('#app')
+createApp(App)
+    .use(router)
+    .use(store)
+    .use(vuetify)
+    .use(VueGoogleMaps, {
+        load: {
+            key: '//',
+            libraries: "places"
+        },
+    })
+    .use(VueGoogleCharts)
+    .mount('#app')
