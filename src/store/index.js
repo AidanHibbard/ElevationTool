@@ -15,6 +15,20 @@ const store = createStore({
         };
     },
     mutations: {
+        AddMarker: (state, marker) => {
+            state.markers.push(marker);
+            this.dispatch('CreateRoute');
+        },
+        DeleteMarker: (state, idx) => {
+            state.markers.splice(idx, 1);
+            this.dispatch('CreateRoute');
+        },
+        ChartMarker: (state, idx) => {
+            state.selectMarker = state.locs[idx];
+        },
+        Deselect: (state) => {
+            state.selectMarker = false;
+        },
         SetCenter: (state, event) => {
             state.center = event.geometry.location;
         },
@@ -30,6 +44,7 @@ const store = createStore({
         },
         reset: (state) => {
             state.markers = [];
+            this.dispactch('CreateRoute');
             state.distance = 0;
             state.change = 0;
         }
