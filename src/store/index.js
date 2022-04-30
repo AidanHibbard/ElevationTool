@@ -7,6 +7,11 @@ const store = createStore({
             distance: 0,
             change: 0,
             conversion: ['Miles','Feet'],
+            selectMarker: false,
+            locs: null,
+            markers: [],
+            currentResults: [],
+            currentPath: [],
         };
     },
     mutations: {
@@ -22,6 +27,50 @@ const store = createStore({
                 'Kilometers',
                 'Meters'
             ]
+        },
+        reset: (state) => {
+            state.markers = [];
+            state.distance = 0;
+            state.change = 0;
+        }
+    },
+    actions: {
+        CreateRoute: ({ state }) => {
+            if (state.markers.length <= 1) { 
+                this.commit('reset');
+            } else {
+                const 
+                    directionsService = new window.google.maps.DirectionsService,
+                    elevationService = new window.google.maps.ElevationService;
+                // There has to be a one liner way to filter this
+                let waypoints = [];
+                if (state.markers.length > 2) {
+                    for (let i=1; i < (state.markers.length - 1); i++) {
+                    waypoints.push({ location: { lat: state.markers[i].lat(), lng: state.markers[i].lng() }})
+                    };
+                };
+                directionsService.route(
+                {
+                    origin: state.markers[0],
+                    waypoints: waypoints,
+                    destination: state.markers[state.markers.length - 1],
+                    travelMode: 'DRIVING'
+                },
+                (response) => {
+                    state.currentPath = window.google.maps.geometry.encoding.decodePath(
+                        response.routes[0].overview_polyline
+                    );
+                    computeDistance(response.routes[0])
+                    elevationService.getElevationAlongPath({
+                        path: response.routes[0].overview_path,
+                        samples: 256
+                    }, (results) => {
+                        const etl = createTable(results);          
+                        state.currentResults = etl.dataTable;
+                        state.locs = etl.locs;
+                    });
+                });
+            };
         }
     }
 });
