@@ -62,8 +62,6 @@ function createTable(results) {
     maxEl *= 3.28;
     const elChange = (maxEl - minEl).toFixed(0)
     const grade = (elChange/(distance * 5280)*100).toFixed(2);
-    document.getElementById('grade').innerHTML = `${grade}% grade avg`;
-    document.getElementById('rise').innerHTML = `${elChange} ft elevation change`;
     return { dataTable, locs };
 };
 export { computeDistance, createTable };

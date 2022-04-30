@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <NavBar v-if="$route.name !== 'Get Started'" />
+    <NavBar />
     <v-main>
       <router-view/>
     </v-main>

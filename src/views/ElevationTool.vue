@@ -1,14 +1,5 @@
 <template>
   <div id="container">
-    <button 
-      @click="clearMarkers()"
-    >
-      Clear Markers
-    </button>
-    <input type="radio" id="miles" name="mi_or_km" v-model="measurement" value="MI">
-    <label for="miles">Miles</label>
-    <input type="radio" id="km" name="mi_or_km" v-model="measurement" value="KM">
-    <label for="km">KM</label>
     <GMapMap
         :center="center"
         :zoom="13"
@@ -41,9 +32,9 @@
       />
     </GMapMap>
     <div id="grade_info">
-      <span id="info">0</span> Miles
+      {{ distance }} {{ conversion[0] }}
       <br />
-      <span id="rise"> 0 ft Elevation change</span>
+      {{ change }} {{ conversion[1] }}
       <br />
       <span id="grade"></span>
       <div id="key">
@@ -77,7 +68,6 @@ export default {
   name: 'ElevationTool',
   data () {
     return {
-      measurement: 'MI',
       selectMarker: false,
       locs: null,
       markers: [],
@@ -99,6 +89,9 @@ export default {
   computed: { 
     ...mapState({
       center: (state) => state.center,
+      distance: (state) => state.distance,
+      conversion: (state) => state.conversion,
+      change: (state) => state.change
     })
   },
   methods: {
@@ -127,10 +120,6 @@ export default {
     },
     createRoute: function () {
       if (this.markers.length <= 1) { 
-        document.getElementById('info').innerHTML = `0`;
-        document.getElementById('grade').innerHTML = `0% grade avg`;
-        document.getElementById('rise').innerHTML = `0 ft elevation change`;
-        document.getElementById('grade').innerHTML = `0% grade avg`;
         this.currentPath = [];
         this.selectMarker = false;
       } else {
@@ -155,7 +144,7 @@ export default {
           this.currentPath = window.google.maps.geometry.encoding.decodePath(
             response.routes[0].overview_polyline
           );
-          document.getElementById('info').innerHTML = computeDistance(response.routes[0])
+            computeDistance(response.routes[0])
           elevationService.getElevationAlongPath({
             path: response.routes[0].overview_path,
             samples: 256
