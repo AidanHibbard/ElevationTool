@@ -2,12 +2,12 @@ import { createStore } from 'vuex';
 const store = createStore({
     state () {
         return {
-            count: 0
+            center: { lat: 45.551289, lng: 14.724260 },
         };
     },
     mutations: {
-        increment (state) {
-            state.count++
+        SetCenter: (state, event) => {
+            state.center = event.geometry.location;
         }
     }
 });

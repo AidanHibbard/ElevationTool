@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { computeDistance, createTable } from '@/utils';
 export default {
   name: 'ElevationTool',
@@ -82,7 +83,6 @@ export default {
       markers: [],
       currentResults: [],
       currentPath: [],
-      center: { lat: 45.551289, lng: 14.724260 },
       chartOptions: {
         chart: {
           title: 'Elevation change',
@@ -95,6 +95,11 @@ export default {
         },
       }
     };
+  },
+  computed: { 
+    ...mapState({
+      center: (state) => state.center,
+    })
   },
   methods: {
     addMarker: function (e) {
@@ -119,9 +124,6 @@ export default {
       // Creating a second locs array seems cumbersome
       // Maybe it's the right way to do things
       this.selectMarker = this.locs[event[0].row];
-    },
-    setCenter: function (e) {
-      this.center = e.geometry.location;
     },
     createRoute: function () {
       if (this.markers.length <= 1) { 

@@ -30,8 +30,21 @@
         >
             <v-list-item>
                 <v-list-item-title class="text-h6">
-                    Application <v-icon>mdi-check</v-icon>
+                    Measurement
                 </v-list-item-title>
+                <v-radio-group
+                    v-model="radios"
+                    mandatory
+                    >
+                    <v-radio
+                        label="Miles"
+                        value="MI"
+                    ></v-radio>
+                    <v-radio
+                        label="Kilometers"
+                        value="KM"
+                    ></v-radio>
+                </v-radio-group>
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
@@ -41,17 +54,8 @@
 export default {
     name: 'NavBar',
     data: () => ({
-        drawer: true,
+        drawer: false,
         group: null,
-        settings: {
-            'Measurement': {
-                default: 'mi',
-                options: {
-                    true: 'mi',
-                    false: 'km'
-                }
-            }
-        }
     }),
 }
 </script>
