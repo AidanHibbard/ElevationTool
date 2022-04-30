@@ -34,7 +34,7 @@
     <div id="grade_info">
       {{ distance }} {{ conversion[0] }}
       <br />
-      {{ change }} {{ conversion[1] }}
+      {{ change }} {{ conversion[1] }} Change
       <br />
       <span id="grade"></span>
       <div id="key">
@@ -62,17 +62,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { computeDistance, createTable } from '@/utils';
+import { mapMutations, mapState, mapActions } from 'vuex';
 export default {
   name: 'ElevationTool',
   data () {
     return {
-      selectMarker: false,
-      locs: null,
-      markers: [],
-      currentResults: [],
-      currentPath: [],
       chartOptions: {
         chart: {
           title: 'Elevation change',
@@ -89,74 +83,21 @@ export default {
   computed: { 
     ...mapState({
       center: (state) => state.center,
+      selectMarker: (state) => state.SelectMarker,
+      markers: (state) => state.markers,
       distance: (state) => state.distance,
       conversion: (state) => state.conversion,
       change: (state) => state.change
     })
   },
   methods: {
-    addMarker: function (e) {
-      this.markers.push(e.latLng);
-      this.createRoute();
-    },
-    deleteMarker: function (i) {
-      this.markers.splice(i, 1);
-      this.createRoute();
-    },
-    clearMarkers: function () {
-      this.markers = [];
-      this.createRoute();
-    },
-    chartMarker: function () {
-      const chart = this.$refs.gChart.chartObject;
-      const event = chart.getSelection();
-      // Clicking out of bounds sends undefined 
-      // Which unfortunetly breaks the chart
-      if (!event[0]) { return; };
-      // This should be revisited
-      // Creating a second locs array seems cumbersome
-      // Maybe it's the right way to do things
-      this.selectMarker = this.locs[event[0].row];
-    },
-    createRoute: function () {
-      if (this.markers.length <= 1) { 
-        this.currentPath = [];
-        this.selectMarker = false;
-      } else {
-        const 
-          directionsService = new window.google.maps.DirectionsService,
-          elevationService = new window.google.maps.ElevationService;
-        // There has to be a one liner way to filter this
-        let waypoints = [];
-        if (this.markers.length > 2) {
-          for (let i=1; i < (this.markers.length - 1); i++) {
-            waypoints.push({ location: { lat: this.markers[i].lat(), lng: this.markers[i].lng() }})
-          };
-        };
-        directionsService.route(
-        {
-          origin: this.markers[0],
-          waypoints: waypoints,
-          destination: this.markers[this.markers.length - 1],
-          travelMode: 'DRIVING'
-        },
-        (response) => {
-          this.currentPath = window.google.maps.geometry.encoding.decodePath(
-            response.routes[0].overview_polyline
-          );
-            computeDistance(response.routes[0])
-          elevationService.getElevationAlongPath({
-            path: response.routes[0].overview_path,
-            samples: 256
-          }, (results) => {
-            const etl = createTable(results);          
-            this.currentResults = etl.dataTable;
-            this.locs = etl.locs;
-          });
-        });
-      };
-    }
-  },
+    ...mapActions({
+
+    }),
+    ...mapMutations({
+      addMarker: 'AddMarker',
+    })
+  }
 }
 </script>
 

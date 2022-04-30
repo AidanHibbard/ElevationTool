@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import { computeDistance, createTable } from '@/utils';
 const store = createStore({
     state () {
         return {
