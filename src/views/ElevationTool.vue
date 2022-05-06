@@ -5,7 +5,7 @@
         :zoom="13"
         map-type-id="terrain"
         style="width: 100vw;"
-        @click="addMarker"
+        @click="addmarker"
         ref="mapRef"
     >
       <GMapMarker
@@ -13,7 +13,7 @@
         :position="selectMarker"
         :draggable="false"
         :clickable="true"
-        @click="selectMarker = false"
+        @click="$store.state.selectMarker = false"
       />
       <GMapMarker
         v-for="(m, index) in markers"
@@ -22,7 +22,7 @@
         :position="m"
         :draggable="false"
         :clickable="true"
-        @click="deleteMarker(index)"
+        @click="deletemarker(index)"
       />
       <GMapPolyline
         v-if="markers.length > 1"
@@ -88,15 +88,24 @@ export default {
       distance: (state) => state.distance,
       conversion: (state) => state.conversion,
       change: (state) => state.change
-    })
+    }),
   },
   methods: {
     ...mapActions({
-
+      CreateRoute: 'CreateRoute',
     }),
     ...mapMutations({
-      addMarker: 'AddMarker',
-    })
+      AddMarker: 'AddMarker',
+      DeleteMarker: 'DeleteMarker'
+    }),
+    addmarker: (e) => {
+      this.AddMarker(e.geometry.LatLng);
+      this.CreateRoute();
+    },
+    deletemarker: (idx) => {
+      this.DeleteMarker(idx);
+      this.CreateRoute();
+    }
   }
 }
 </script>

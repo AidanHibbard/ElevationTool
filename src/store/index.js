@@ -10,7 +10,6 @@ const store = createStore({
             conversion: ['Miles','Feet'],
             selectMarker: false,
             locs: null,
-            markers: [],
             currentResults: [],
             currentPath: [],
         };
@@ -18,11 +17,9 @@ const store = createStore({
     mutations: {
         AddMarker: (state, marker) => {
             state.markers.push(marker);
-            this.dispatch('CreateRoute');
         },
         DeleteMarker: (state, idx) => {
             state.markers.splice(idx, 1);
-            this.dispatch('CreateRoute');
         },
         ChartMarker: (state, idx) => {
             state.selectMarker = state.locs[idx];
@@ -63,8 +60,8 @@ const store = createStore({
                 if (state.markers.length > 2) {
                     for (let i=1; i < (state.markers.length - 1); i++) {
                     waypoints.push({ location: { lat: state.markers[i].lat(), lng: state.markers[i].lng() }})
-                    };
-                };
+                    }
+                }
                 directionsService.route(
                 {
                     origin: state.markers[0],
@@ -85,8 +82,8 @@ const store = createStore({
                         state.currentResults = etl.dataTable;
                         state.locs = etl.locs;
                     });
-                });
-            };
+                })
+            }
         }
     }
 });
