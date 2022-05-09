@@ -13,6 +13,7 @@
             <v-btn
                 elevation="2"
                 color="black"
+                @click="ClearMarkers"
             >
                 Clear
             </v-btn>
@@ -68,9 +69,10 @@ export default {
         group: null,
     }),
     methods: {
-        ...mapMutations({
-            SetCenter: 'SetCenter',
-        })
+        ...mapMutations([
+            'SetCenter',
+            'ClearMarkers'
+        ])
     }
 }
 </script>

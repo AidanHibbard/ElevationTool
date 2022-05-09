@@ -9,11 +9,11 @@
         ref="mapRef"
     >
       <GMapMarker
-        v-if="selectMarker"
-        :position="selectMarker"
+        v-if="selected"
+        :position="selected"
         :draggable="false"
         :clickable="true"
-        @click="selectMarker = false"
+        @click="Deselect"
       />
       <GMapMarker
         v-for="(m, index) in markers"
@@ -75,7 +75,12 @@ export default {
       },
       chartEvents: {
         select: () => {
-          this.ChartMarker();
+          const chart = this.$refs.gChart.chartObject;
+          const event = chart.getSelection();
+          // If click is outside of line
+          // Empty event breaks chart
+          if (!event[0]) { return; };
+          this.ChartMarker(event[0].row);
         },
       }
     };
@@ -83,7 +88,7 @@ export default {
   computed: { 
     ...mapState({
       center: (state) => state.center,
-      selectMarker: (state) => state.SelectMarker,
+      selected: (state) => state.selectMarker,
       markers: (state) => state.markers,
       distance: (state) => state.distance,
       conversion: (state) => state.conversion,
@@ -109,7 +114,8 @@ export default {
       'AddMarker',
       'DeleteMarker',
       'ChartMarker',
-      'Reset'
+      'Reset',
+      'Deselect'
     ]),
     ...mapActions([
       'CreateRoute'

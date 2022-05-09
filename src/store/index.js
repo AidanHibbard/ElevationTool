@@ -43,6 +43,9 @@ const store = createStore({
                 'Meters'
             ]
         },
+        ClearMarkers: (state) => {
+            state.markers = [];
+        },
         Reset: (state) => {
             state.distance = 0;
             state.change = 0;
