@@ -78,7 +78,7 @@ const store = createStore({
                 state.currentPath = window.google.maps.geometry.encoding.decodePath(
                     response.routes[0].overview_polyline
                 );
-                computeDistance(response.routes[0])
+                state.distance = computeDistance(response.routes[0])
                 elevationService.getElevationAlongPath({
                     path: response.routes[0].overview_path,
                     samples: 256
@@ -86,6 +86,7 @@ const store = createStore({
                     const etl = createTable(results);          
                     state.currentResults = etl.dataTable;
                     state.locs = etl.locs;
+                    state.change = etl.elChange;
                 });
             });
         }

@@ -65,6 +65,6 @@ function createTable(results) {
     maxEl *= 3.28;
     const elChange = (maxEl - minEl).toFixed(0)
     const grade = (elChange/(distance * 5280)*100).toFixed(2);
-    return { dataTable, locs };
+    return { dataTable, locs, elChange, grade };
 };
 export { computeDistance, createTable };

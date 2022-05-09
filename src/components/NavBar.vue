@@ -5,7 +5,6 @@
             dark
             nav
         >
-            <!-- @place_changed="SetCenter" -->
             <GMapAutocomplete
                 placeholder="Enter a place"
                 @place_changed="SetCenter"
