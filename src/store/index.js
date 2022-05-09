@@ -24,7 +24,6 @@ const store = createStore({
             state.markers.splice(idx, 1);
         },
         ChartMarker: (state, idx) => {
-            console.log(idx)
             state.selectMarker = state.locs[idx];
         },
         Deselect: (state) => {

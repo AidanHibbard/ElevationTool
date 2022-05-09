@@ -14,7 +14,7 @@ export default {
     RouteInfo,
     Map
   },
-}
+};
 </script>
 
 <style>

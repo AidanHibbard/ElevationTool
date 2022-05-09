@@ -38,34 +38,34 @@ export default {
     name: 'Map',
     computed: { 
         ...mapState({
-        center: (state) => state.center,
-        selected: (state) => state.selectMarker,
-        markers: (state) => state.markers,
-        path: (state) => state.currentPath,
+            center: (state) => state.center,
+            selected: (state) => state.selectMarker,
+            markers: (state) => state.markers,
+            path: (state) => state.currentPath,
         })
     },
     watch: {
         markers: {
-        deep: true,
-        handler() {
-            if (this.markers.length <= 1) {
-            this.Reset();
-            } else {
-            this.CreateRoute();
-            };
-        }
+            deep: true,
+            handler() {
+                if (this.markers.length <= 1) {
+                    this.Reset();
+                } else {
+                    this.CreateRoute();
+                };
+            }
         }
     },
     methods: {
         ...mapMutations([
-        'AddMarker',
-        'DeleteMarker',
-        'ChartMarker',
-        'Reset',
-        'Deselect'
+            'AddMarker',
+            'DeleteMarker',
+            'ChartMarker',
+            'Reset',
+            'Deselect'
         ]),
         ...mapActions([
-        'CreateRoute'
+            'CreateRoute'
         ])
     }
 }
