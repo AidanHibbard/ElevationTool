@@ -11,10 +11,10 @@ function Color(grade) {
     } else {
         return '#000000';
     }
-}
+};
 function mapGrade(rise,run) {
 	return (rise/run*100).toFixed(2);
-}
+};
 function computeDistance(route) {
     let total = 0;
     route.legs.forEach((leg) => {
@@ -48,10 +48,13 @@ function createTable(results) {
         }
         // Max grade
 		if (Math.abs(portion) > maxEl) max = Math.abs(portion);
-		const color = `${Color(Math.abs(portion))}`;
         // Each row
         // Don't add a name to the sample since there isn't enough space
-        dataTable.push(['', elSample.elevation * 3.28, color]);
+        dataTable.push([
+            '', 
+            elSample.elevation * 3.28, 
+            Color(Math.abs(portion))
+        ]);
         locs.push({ 
             lat: elSample.location.lat(), 
             lng: elSample.location.lng()

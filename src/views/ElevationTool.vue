@@ -5,7 +5,7 @@
         :zoom="13"
         map-type-id="terrain"
         style="width: 100vw;"
-        @click="addMarker"
+        @click="AddMarker"
         ref="mapRef"
     >
       <GMapMarker
@@ -22,11 +22,11 @@
         :position="m"
         :draggable="false"
         :clickable="true"
-        @click="deleteMarker(index)"
+        @click="DeleteMarker(index)"
       />
       <GMapPolyline
         v-if="markers.length > 1"
-        :path="currentPath"
+        :path="path"
         :editable="false"
         ref="polyline"
       />
@@ -52,7 +52,7 @@
       <GChart 
         v-if="markers.length > 1"
         type="LineChart" 
-        :data="currentResults" 
+        :data="results" 
         :options="chartOptions" 
         :events="chartEvents"
         ref="gChart"
@@ -75,7 +75,7 @@ export default {
       },
       chartEvents: {
         select: () => {
-          this.chartMarker();
+          this.ChartMarker();
         },
       }
     };
@@ -87,16 +87,33 @@ export default {
       markers: (state) => state.markers,
       distance: (state) => state.distance,
       conversion: (state) => state.conversion,
+      path: (state) => state.currentPath,
+      results: (state) => state.currentResults,
       change: (state) => state.change
     })
   },
+  watch: {
+    markers: {
+      deep: true,
+      handler() {
+        if (this.markers.length <= 1) {
+          this.Reset();
+        } else {
+          this.CreateRoute();
+        };
+      }
+    }
+  },
   methods: {
-    ...mapActions({
-
-    }),
-    ...mapMutations({
-      addMarker: 'AddMarker',
-    })
+    ...mapMutations([
+      'AddMarker',
+      'DeleteMarker',
+      'ChartMarker',
+      'Reset'
+    ]),
+    ...mapActions([
+      'CreateRoute'
+    ])
   }
 }
 </script>

@@ -3,6 +3,7 @@ import { computeDistance, createTable } from '@/utils';
 const store = createStore({
     state () {
         return {
+            // Center: KnK
             center: { lat: 45.551289, lng: 14.724260 },
             markers: [],
             distance: 0,
@@ -17,14 +18,13 @@ const store = createStore({
     },
     mutations: {
         AddMarker: (state, marker) => {
-            state.markers.push(marker);
-            this.dispatch('CreateRoute');
+            state.markers.push(marker.latLng);
         },
         DeleteMarker: (state, idx) => {
             state.markers.splice(idx, 1);
-            this.dispatch('CreateRoute');
         },
         ChartMarker: (state, idx) => {
+            console.log(idx)
             state.selectMarker = state.locs[idx];
         },
         Deselect: (state) => {
@@ -43,50 +43,48 @@ const store = createStore({
                 'Meters'
             ]
         },
-        reset: (state) => {
-            state.markers = [];
-            this.dispactch('CreateRoute');
+        Reset: (state) => {
             state.distance = 0;
             state.change = 0;
+            state.currentPath = [];
+            state.currentResults = [];
+            state.locs = null;
+            state.selectMarker = false;
         }
     },
     actions: {
         CreateRoute: ({ state }) => {
-            if (state.markers.length <= 1) { 
-                this.commit('reset');
-            } else {
-                const 
-                    directionsService = new window.google.maps.DirectionsService,
-                    elevationService = new window.google.maps.ElevationService;
-                // There has to be a one liner way to filter this
-                let waypoints = [];
-                if (state.markers.length > 2) {
-                    for (let i=1; i < (state.markers.length - 1); i++) {
-                    waypoints.push({ location: { lat: state.markers[i].lat(), lng: state.markers[i].lng() }})
-                    };
+            const 
+                directionsService = new window.google.maps.DirectionsService,
+                elevationService = new window.google.maps.ElevationService;
+            // There has to be a one liner way to filter this
+            let waypoints = [];
+            if (state.markers.length > 2) {
+                for (let i=1; i < (state.markers.length - 1); i++) {
+                waypoints.push({ location: { lat: state.markers[i].lat(), lng: state.markers[i].lng() }})
                 };
-                directionsService.route(
-                {
-                    origin: state.markers[0],
-                    waypoints: waypoints,
-                    destination: state.markers[state.markers.length - 1],
-                    travelMode: 'DRIVING'
-                },
-                (response) => {
-                    state.currentPath = window.google.maps.geometry.encoding.decodePath(
-                        response.routes[0].overview_polyline
-                    );
-                    computeDistance(response.routes[0])
-                    elevationService.getElevationAlongPath({
-                        path: response.routes[0].overview_path,
-                        samples: 256
-                    }, (results) => {
-                        const etl = createTable(results);          
-                        state.currentResults = etl.dataTable;
-                        state.locs = etl.locs;
-                    });
-                });
             };
+            directionsService.route(
+            {
+                origin: state.markers[0],
+                waypoints: waypoints,
+                destination: state.markers[state.markers.length - 1],
+                travelMode: 'DRIVING'
+            },
+            (response) => {
+                state.currentPath = window.google.maps.geometry.encoding.decodePath(
+                    response.routes[0].overview_polyline
+                );
+                computeDistance(response.routes[0])
+                elevationService.getElevationAlongPath({
+                    path: response.routes[0].overview_path,
+                    samples: 256
+                }, (results) => {
+                    const etl = createTable(results);          
+                    state.currentResults = etl.dataTable;
+                    state.locs = etl.locs;
+                });
+            });
         }
     }
 });
