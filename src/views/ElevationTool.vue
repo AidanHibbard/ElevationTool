@@ -1,21 +1,8 @@
 <template>
   <div id="container">
-    <GMapAutocomplete
-      placeholder="Enter a place"
-      @place_changed="setCenter"
-    />
-    <button 
-      @click="clearMarkers()"
-    >
-      Clear Markers
-    </button>
-    <input type="radio" id="miles" name="mi_or_km" v-model="measurement" value="MI">
-    <label for="miles">Miles</label>
-    <input type="radio" id="km" name="mi_or_km" v-model="measurement" value="KM">
-    <label for="km">KM</label>
     <GMapMap
         :center="center"
-        :zoom="13"
+        :zoom="15"
         map-type-id="terrain"
         style="width: 100vw;"
         @click="addMarker"
@@ -76,17 +63,16 @@
 
 <script>
 import { computeDistance, createTable } from '@/utils';
+import { mapState } from 'vuex';
 export default {
   name: 'ElevationTool',
   data () {
     return {
-      measurement: 'MI',
       selectMarker: false,
       locs: null,
       markers: [],
       currentResults: [],
       currentPath: [],
-      center: { lat: 45.551289, lng: 14.724260 },
       chartOptions: {
         chart: {
           title: 'Elevation change',
@@ -99,6 +85,11 @@ export default {
         },
       }
     };
+  },
+  computed: {
+    ...mapState({
+      center: (state) => state.center,
+    })
   },
   methods: {
     addMarker: function (e) {
@@ -123,9 +114,6 @@ export default {
       // Creating a second locs array seems cumbersome
       // Maybe it's the right way to do things
       this.selectMarker = this.locs[event[0].row];
-    },
-    setCenter: function (e) {
-      this.center = e.geometry.location;
     },
     createRoute: function () {
       if (this.markers.length <= 1) { 

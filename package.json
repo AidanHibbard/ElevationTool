@@ -6,14 +6,16 @@
     "build": "vite build",
     "test:unit": "vitest --environment jsdom",
     "coverage": "vitest run --coverage --environment jsdom",
-    "dev": "vite",
+    "dev": "vite --host",
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
     "@fawmi/vue-google-maps": "^0.9.67",
     "@mdi/font": "5.9.55",
+    "chart.js": "^3.8.0",
     "roboto-fontface": "*",
     "vue": "^3.2.33",
+    "vue-chartjs": "^4.1.1",
     "vue-router": "^4.0.14",
     "vue3-googl-chart": "^0.0.1",
     "vuetify": "^3.0.0-beta.0",
