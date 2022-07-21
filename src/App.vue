@@ -4,6 +4,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-spacer />
+      
       <GMapAutocomplete
         placeholder="Enter a place"
         @place_changed="setCenter"
