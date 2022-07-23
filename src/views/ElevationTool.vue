@@ -63,14 +63,13 @@
 
 <script>
 import { computeDistance, createTable } from '@/utils';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 export default {
   name: 'ElevationTool',
   data () {
     return {
       selectMarker: false,
       locs: null,
-      markers: [],
       currentResults: [],
       currentPath: [],
       chartOptions: {
@@ -89,21 +88,14 @@ export default {
   computed: {
     ...mapState({
       center: (state) => state.center,
+      markers: (state) => state.markers,
     })
   },
   methods: {
-    addMarker: function (e) {
-      this.markers.push(e.latLng);
-      this.createRoute();
-    },
-    deleteMarker: function (i) {
-      this.markers.splice(i, 1);
-      this.createRoute();
-    },
-    clearMarkers: function () {
-      this.markers = [];
-      this.createRoute();
-    },
+    ...mapMutations([
+      'addMarker',
+      'deleteMarker'
+    ]),
     chartMarker: function () {
       const chart = this.$refs.gChart.chartObject;
       const event = chart.getSelection();

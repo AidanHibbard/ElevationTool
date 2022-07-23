@@ -1,7 +1,12 @@
 <template>
   <v-app>
     <v-app-bar>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-icon 
+        color="blue lighten-2"
+        @click="drawer = !drawer"
+      >
+        mdi-cog-outline
+      </v-icon>
 
       <v-spacer />
       
@@ -27,7 +32,7 @@
       absolute
       temporary
     >
-
+      <Settings />
     </v-navigation-drawer>
     <v-main>
       <router-view/>
@@ -36,9 +41,13 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations } from 'vuex';
+import Settings from '@/components/Settings.vue';
 export default {
   name: 'App',
+  components: {
+    Settings,
+  },
   data: () => ({
     drawer: false,
     group: null,

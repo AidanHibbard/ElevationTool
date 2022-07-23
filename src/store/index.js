@@ -13,7 +13,7 @@ const store = createStore({
         addMarker: (state, loc) => {
             state.markers.push(loc.latLng);
         },
-        delMarker: (state, idx) => {
+        deleteMarker: (state, idx) => {
             state.markers.splice(idx, 1);
         },
         clearMarkers: (state) => {
