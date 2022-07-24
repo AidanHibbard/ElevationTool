@@ -3,14 +3,14 @@
 
     <v-list-item two-line>
         <v-list-item-content>
-            <v-list-item-title>Dark Mode</v-list-item-title>
+            <v-list-item-title>Dark Mode <v-icon>mdi-toggle-switch-off</v-icon></v-list-item-title>
             <v-list-item-subtitle>High contrast Map and Page</v-list-item-subtitle>
         </v-list-item-content>
     </v-list-item>
 
         <v-list-item two-line>
         <v-list-item-content>
-            <v-list-item-title>MI / KM</v-list-item-title>
+            <v-list-item-title>MI / KM <v-icon>mdi-toggle-switch-off</v-icon></v-list-item-title>
             <v-list-item-subtitle>Swap between Metric or Imperial</v-list-item-subtitle>
         </v-list-item-content>
     </v-list-item>
@@ -25,6 +25,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

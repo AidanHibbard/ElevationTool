@@ -37,15 +37,8 @@
       <span id="rise"> 0 ft Elevation change</span>
       <br />
       <span id="grade"></span>
-      <div id="key">
-        Legend:
-        <span :style="{ backgroundColor: '#b2c4b9' }">1%</span>
-        <span :style="{ backgroundColor: '#12b5cb' }">3%</span>
-        <span :style="{ backgroundColor: '#34a853' }">6%</span>
-        <span :style="{ backgroundColor: '#ea4335' }">9%</span>
-        <span :style="{ backgroundColor: '#000000', color: 'white' }">{{"> 9%"}}</span>
-      </div>
     </div>
+    <Legend />
     <div>
       <span v-if="markers.length > 1">Click along the chart line to drop a pin</span>
       <span v-if="markers.length <= 1">Drop a couple pins to get started</span>
@@ -62,10 +55,14 @@
 </template>
 
 <script>
+import Legend from '@/components/Legend.vue';
 import { computeDistance, createTable } from '@/utils';
 import { mapState, mapMutations } from 'vuex';
 export default {
   name: 'ElevationTool',
+  components: {
+    Legend,
+  },
   data () {
     return {
       selectMarker: false,
@@ -126,8 +123,7 @@ export default {
             waypoints.push({ location: { lat: this.markers[i].lat(), lng: this.markers[i].lng() }})
           };
         };
-        directionsService.route(
-        {
+        directionsService.route({
           origin: this.markers[0],
           waypoints: waypoints,
           destination: this.markers[this.markers.length - 1],
