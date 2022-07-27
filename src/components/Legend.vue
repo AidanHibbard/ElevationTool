@@ -1,20 +1,60 @@
 <template>
     <div id="key">
         Legend:
-        <span :style="{ backgroundColor: '#b2c4b9'}">1%</span>
-        <span :style="{ backgroundColor: '#12b5cb' }">3%</span>
-        <span :style="{ backgroundColor: '#34a853' }">6%</span>
-        <span :style="{ backgroundColor: '#ea4335' }">9%</span>
-        <span :style="{ backgroundColor: 'black', color: 'white' }">{{"> 9%"}}</span>
+        <span
+            v-for="(color, idx) in colors"
+            :key="color.percent"
+            :style="{
+                backgroundColor: color.color,
+            }"
+            :class="[ 
+                idx === 0 ? 'leftRadius' : '',
+                idx === 4 ? 'rightRadius' : ''
+            ]"
+        >
+            {{color.percent}}%
+        </span>
     </div>
 </template>
 
 <script>
 export default {
     name: 'Legend',
+    data () {
+        return {
+            colors: [
+                {
+                    percent: '1',
+                    color: '#19a84c'
+                },
+                {
+                    percent: '3',
+                    color: '#0092ff'
+                },
+                {
+                    percent: '6',
+                    color: '#ffed3d'
+                },
+                {
+                    percent: '9',
+                    color: '#f6252b'
+                },
+                {
+                    percent: '>9',
+                    color: '#000000'
+                }
+            ]
+        }
+    }
 }
 </script>
 
 <style scoped>
-
+.leftRadius {
+    border-radius: 5px 0 0 5px;
+}
+.rightRadius {
+    border-radius: 0 5px 5px 0;
+    color: white;
+}
 </style>
