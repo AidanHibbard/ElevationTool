@@ -2,8 +2,17 @@ import { createStore } from 'vuex';
 const store = createStore({
     state () {
         return {
+            // Map 
             center: { lat: 45.551289, lng: 14.724260 },
             markers: [],
+
+            // Settings
+            darkMode: false,
+            MiKm: false, // MI Default
+            transitMode: 'Driving',
+
+
+
         };
     },
     mutations: {
@@ -18,6 +27,15 @@ const store = createStore({
         },
         clearMarkers: (state) => {
             state.markers = [];
+        },
+        toggleTheme: (state) => {
+            state.darkMode = !state.darkMode;
+        },
+        toggleSystem: (state) => {
+            state.MiKm = !state.MiKm;
+        },
+        toggleTransit: (state, type) => {
+            state.transitMode = type;
         }
     },
 });
