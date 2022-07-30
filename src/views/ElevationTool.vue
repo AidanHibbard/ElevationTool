@@ -1,5 +1,6 @@
 <template>
   <div id="container">
+    <ErrorBanner v-if="error" />
     <GMapMap
         :center="center"
         :zoom="15"
@@ -55,6 +56,7 @@
 </template>
 
 <script>
+import ErrorBanner from '@/components/ErrorBanner.vue';
 import Legend from '@/components/Legend.vue';
 import { computeDistance, createTable } from '@/utils';
 import { mapState, mapMutations } from 'vuex';
@@ -62,6 +64,7 @@ export default {
   name: 'ElevationTool',
   components: {
     Legend,
+    ErrorBanner
   },
   data () {
     return {
@@ -87,6 +90,7 @@ export default {
       center: (state) => state.center,
       markers: (state) => state.markers,
       transitMode: (state) => state.transitMode,
+      error: (state) => state.error,
     })
   },
   watch: {
@@ -103,7 +107,8 @@ export default {
   methods: {
     ...mapMutations([
       'addMarker',
-      'deleteMarker'
+      'deleteMarker',
+      'toggleError'
     ]),
     chartMarker: function () {
       const chart = this.$refs.gChart.chartObject;
@@ -142,18 +147,24 @@ export default {
           travelMode: this.transitMode
         },
         (response) => {
-          this.currentPath = window.google.maps.geometry.encoding.decodePath(
-            response.routes[0].overview_polyline
-          );
-          document.getElementById('info').innerHTML = computeDistance(response.routes[0])
-          elevationService.getElevationAlongPath({
-            path: response.routes[0].overview_path,
-            samples: 256
-          }, (results) => {
-            const etl = createTable(results);          
-            this.currentResults = etl.dataTable;
-            this.locs = etl.locs;
-          });
+          if (response.status !== "OK") {
+            this.toggleError(true);
+            console.error(`No route found with transit mode: ${this.transitMode}`);
+          } else {
+            this.toggleError(false);
+            this.currentPath = window.google.maps.geometry.encoding.decodePath(
+              response.routes[0].overview_polyline
+            );
+            document.getElementById('info').innerHTML = computeDistance(response.routes[0])
+            elevationService.getElevationAlongPath({
+              path: response.routes[0].overview_path,
+              samples: 256
+            }, (results) => {
+              const etl = createTable(results);          
+              this.currentResults = etl.dataTable;
+              this.locs = etl.locs;
+            });
+          }
         });
       };
     },

@@ -38,7 +38,7 @@
         <v-list-item two-line>
             <v-list-item-content>
                 <v-list-item-title>Transit Mode</v-list-item-title>
-                <v-list-item-subtitle>Swap which travel mode to route with</v-list-item-subtitle>
+                <v-list-item-subtitle>Swap which travel mode to route</v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
 

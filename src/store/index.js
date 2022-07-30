@@ -5,6 +5,7 @@ const store = createStore({
             // Map 
             center: { lat: 45.551289, lng: 14.724260 },
             markers: [],
+            error: false,
 
             // Settings
             darkMode: false,
@@ -36,6 +37,9 @@ const store = createStore({
         },
         toggleTransit: (state, type) => {
             state.transitMode = type;
+        },
+        toggleError: (state, bool) => {
+            state.error = bool;
         }
     },
 });
