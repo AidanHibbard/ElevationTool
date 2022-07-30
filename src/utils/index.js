@@ -1,13 +1,13 @@
 let distance;
 function Color(grade) {
     if (Math.round(grade) < 1) {
-        return '#b2c4b9';
+        return '#19a84c';
     } else if (Math.round(grade) < 3) {
-        return '#12b5cb';
+        return '#0092ff';
     } else if (Math.round(grade) < 6) {
-        return '#34a853';
+        return '#ffed3d';
     } else if (Math.round(grade) < 9) {
-        return '#ea4335';
+        return '#f6252b';
     } else {
         return '#000000';
     }
