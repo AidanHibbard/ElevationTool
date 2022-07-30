@@ -43,48 +43,48 @@
         </v-list-item>
 
         <v-list-item
-            @click="toggleTransit('Driving')"
+            @click="toggleTransit('DRIVING')"
         >
             <v-list-item-content>
                 <v-list-item-title>
                     DRIVING (Default) 
-                    <v-icon v-if="transitMode === 'Driving'">mdi-toggle-switch</v-icon>
+                    <v-icon v-if="transitMode === 'DRIVING'">mdi-toggle-switch</v-icon>
                     <v-icon v-else>mdi-toggle-switch-off</v-icon>
                 </v-list-item-title>
             </v-list-item-content>
         </v-list-item>
 
         <v-list-item
-            @click="toggleTransit('Bicycling')"
+            @click="toggleTransit('BICYCLING')"
         >
             <v-list-item-content>
                 <v-list-item-title>
                     BICYCLING 
-                    <v-icon v-if="transitMode === 'Bicycling'">mdi-toggle-switch</v-icon>
+                    <v-icon v-if="transitMode === 'BICYCLING'">mdi-toggle-switch</v-icon>
                     <v-icon v-else>mdi-toggle-switch-off</v-icon>
                 </v-list-item-title>
             </v-list-item-content>
         </v-list-item>
 
         <v-list-item
-            @click="toggleTransit('Transit')"
+            @click="toggleTransit('TRANSIT')"
         >
             <v-list-item-content>
                 <v-list-item-title>
                     TRANSIT 
-                    <v-icon v-if="transitMode === 'Transit'">mdi-toggle-switch</v-icon>
+                    <v-icon v-if="transitMode === 'TRANSIT'">mdi-toggle-switch</v-icon>
                     <v-icon v-else>mdi-toggle-switch-off</v-icon>
                 </v-list-item-title>
             </v-list-item-content>
         </v-list-item>
 
         <v-list-item
-            @click="toggleTransit('Walking')"
+            @click="toggleTransit('WALKING')"
         >
             <v-list-item-content>
                 <v-list-item-title>
                     WALKING 
-                    <v-icon v-if="transitMode === 'Walking'">mdi-toggle-switch</v-icon>
+                    <v-icon v-if="transitMode === 'WALKING'">mdi-toggle-switch</v-icon>
                     <v-icon v-else>mdi-toggle-switch-off</v-icon>
                 </v-list-item-title>
             </v-list-item-content>

@@ -86,7 +86,19 @@ export default {
     ...mapState({
       center: (state) => state.center,
       markers: (state) => state.markers,
+      transitMode: (state) => state.transitMode,
     })
+  },
+  watch: {
+    markers: {
+      handler() {
+        this.createRoute();
+      },
+      deep: true
+    },
+    transitMode() {
+      this.createRoute();
+    }
   },
   methods: {
     ...mapMutations([
@@ -127,7 +139,7 @@ export default {
           origin: this.markers[0],
           waypoints: waypoints,
           destination: this.markers[this.markers.length - 1],
-          travelMode: 'DRIVING'
+          travelMode: this.transitMode
         },
         (response) => {
           this.currentPath = window.google.maps.geometry.encoding.decodePath(
@@ -144,9 +156,9 @@ export default {
           });
         });
       };
-    }
+    },
   },
-}
+};
 </script>
 
 <style>

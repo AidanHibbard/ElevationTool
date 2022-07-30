@@ -9,7 +9,7 @@ const store = createStore({
             // Settings
             darkMode: false,
             MiKm: false, // MI Default
-            transitMode: 'Driving',
+            transitMode: 'DRIVING',
 
 
 
