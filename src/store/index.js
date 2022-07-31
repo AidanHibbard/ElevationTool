@@ -40,7 +40,7 @@ const store = createStore({
         },
         toggleError: (state, bool) => {
             state.error = bool;
-        }
+        },
     },
 });
 export default store;

@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import dark_style from '@/utils/styles'
 import ErrorBanner from '@/components/ErrorBanner.vue';
 import Legend from '@/components/Legend.vue';
 import { computeDistance, createTable } from '@/utils';
@@ -82,7 +83,7 @@ export default {
         select: () => {
           this.chartMarker();
         },
-      }
+      },
     };
   },
   computed: {
@@ -91,6 +92,7 @@ export default {
       markers: (state) => state.markers,
       transitMode: (state) => state.transitMode,
       error: (state) => state.error,
+      darkMode: (state) => state.darkMode,
     })
   },
   watch: {
@@ -102,6 +104,19 @@ export default {
     },
     transitMode() {
       this.createRoute();
+    },
+    darkMode() {
+      this.$refs.mapRef.$mapPromise.then((mapObject) => {
+        if (this.darkMode) {
+          mapObject.setOptions({
+            styles: dark_style
+          });
+        } else {
+          mapObject.setOptions({
+            styles: []
+          });
+        }
+      })
     }
   },
   methods: {
