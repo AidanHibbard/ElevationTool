@@ -3,6 +3,8 @@
         <span class="closebtn" @click="toggleError(false)">&times;</span> 
         <div>
             Google could not find a route with the given transit mode.
+            <br />
+            Elevation data may still show.
         </div>
     </div>
 </template>

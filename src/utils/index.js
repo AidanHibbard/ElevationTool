@@ -1,3 +1,4 @@
+import store from '@/store';
 let distance;
 function Color(grade) {
     if (Math.round(grade) < 1) {
@@ -47,6 +48,7 @@ function createTable(results) {
             portion = mapGrade(((elSample.elevation) - results[idx+prev].elevation),portion_length);
         }
         // Max grade
+        let max;
 		if (Math.abs(portion) > maxEl) max = Math.abs(portion);
 		const color = `${Color(Math.abs(portion))}`;
         // Each row
@@ -60,10 +62,12 @@ function createTable(results) {
     // convert to feet of elevation
     minEl *= 3.28;
     maxEl *= 3.28;
-    const elChange = (maxEl - minEl).toFixed(0)
-    const grade = (elChange/(distance * 5280)*100).toFixed(2);
-    document.getElementById('grade').innerHTML = `${grade}% grade avg`;
-    document.getElementById('rise').innerHTML = `${elChange} ft elevation change`;
+    const elchange = (maxEl - minEl).toFixed(0)
+    const grade = (elchange/(distance * 5280)*100).toFixed(2);
+    store.commit("gradeinfo", {
+        elchange,
+        grade
+    })
     return { dataTable, locs };
 };
-export { computeDistance, createTable };
+export { computeDistance, createTable, Color };
