@@ -47,7 +47,7 @@ const store = createStore({
         toggleError: (state, bool) => {
             state.error = bool;
         },
-        gradeinfo: (state, payload) => {
+        gradeInfo: (state, payload) => {
             state.grade = payload.grade;
             state.elchange = payload.elchange;
         }

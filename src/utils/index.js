@@ -26,7 +26,8 @@ function computeDistance(route) {
     return total.toString().substring(0, 4);
 };
 function createTable(results) {
-    let dataTable = [],
+    let 
+        dataTable = [],
         locs = [],
         prev = 8,
         portion,
@@ -64,7 +65,7 @@ function createTable(results) {
     maxEl *= 3.28;
     const elchange = (maxEl - minEl).toFixed(0)
     const grade = (elchange/(distance * 5280)*100).toFixed(2);
-    store.commit("gradeinfo", {
+    store.commit("gradeInfo", {
         elchange,
         grade
     })

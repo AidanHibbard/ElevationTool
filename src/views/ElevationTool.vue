@@ -131,7 +131,8 @@ export default {
     ...mapMutations([
       'addMarker',
       'deleteMarker',
-      'toggleError'
+      'toggleError',
+      'gradeInfo'
     ]),
     chartMarker: function () {
       const chart = this.$refs.gChart.chartObject;
@@ -146,7 +147,10 @@ export default {
     },
     createRoute: function () {
       if (this.markers.length <= 1) { 
-        document.getElementById('info').innerHTML = `0`;
+        this.gradeInfo({
+          grade: 0,
+          elchange: 0
+        });
         this.currentPath = [];
         this.selectMarker = false;
       } else {
