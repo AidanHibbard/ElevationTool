@@ -24,23 +24,23 @@ export default {
         return {
             colors: [
                 {
-                    percent: '1',
+                    percent: '< 1',
                     color: '#19a84c'
                 },
                 {
-                    percent: '3',
+                    percent: '< 3',
                     color: '#0092ff'
                 },
                 {
-                    percent: '6',
+                    percent: '< 6',
                     color: '#ffed3d'
                 },
                 {
-                    percent: '9',
+                    percent: '< 9',
                     color: '#f6252b'
                 },
                 {
-                    percent: '>9',
+                    percent: '> 9',
                     color: '#000000'
                 }
             ]
