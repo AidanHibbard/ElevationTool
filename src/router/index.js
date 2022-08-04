@@ -8,6 +8,11 @@ const router = createRouter({
       name: 'Elevation Tool',
       component: () => import('../views/ElevationTool.vue')
     },
+    {
+      path: '/about',
+      name: 'About',
+      component: () => import('../views/About.vue')
+    },
   ]
 })
 

@@ -6,11 +6,11 @@
     "build": "vite build",
     "test:unit": "vitest --environment jsdom",
     "coverage": "vitest run --coverage --environment jsdom",
-    "dev": "vite",
+    "dev": "vite --host",
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
-    "@fawmi/vue-google-maps": "^0.9.67",
+    "@fawmi/vue-google-maps": "^0.9.72",
     "@mdi/font": "5.9.55",
     "roboto-fontface": "*",
     "vue": "^3.2.33",
