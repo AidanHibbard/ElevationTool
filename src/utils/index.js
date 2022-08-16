@@ -1,13 +1,13 @@
 import store from '@/store';
 let distance;
 function Color(grade) {
-    if (Math.round(grade) < 1) {
+    if (grade < 1) {
         return '#19a84c';
-    } else if (Math.round(grade) < 3) {
+    } else if (grade < 3) {
         return '#0092ff';
-    } else if (Math.round(grade) < 6) {
+    } else if (grade < 6) {
         return '#ffed3d';
-    } else if (Math.round(grade) < 9) {
+    } else if (grade < 9) {
         return '#f6252b';
     } else {
         return '#000000';
