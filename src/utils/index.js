@@ -32,13 +32,16 @@ function createTable(results) {
         prev = 8,
         portion,
         portion_length,
+        sample_distance,
+        running_distance = 0,
         minEl, 
         maxEl = 0;
     portion_length = (distance * 1609) / (256/prev)
     // Create Columns expected as [0]
-    dataTable.push(['Sample', 'Elevation', { role: 'style' }]);
+    dataTable.push(['Distance', 'Elevation', { role: 'style' }]);
     // Set first elevation to check if rest are <
     minEl = results[0].elevation;
+    sample_distance = distance / 256;
     results.forEach((elSample, idx) => {
         if (elSample.elevation > maxEl) maxEl = elSample.elevation;
         if (elSample.elevation < minEl) minEl = elSample.elevation;
@@ -48,14 +51,15 @@ function createTable(results) {
         } else {
             portion = mapGrade(((elSample.elevation) - results[idx+prev].elevation),portion_length);
         }
+        // Sample Distance
+        running_distance += sample_distance;
         // Max grade
         let max;
 		if (Math.abs(portion) > maxEl) max = Math.abs(portion);
 		const color = `${Color(Math.abs(portion))}`;
         // Each row
-        // Don't add a name to the sample since there isn't enough space
-        dataTable.push(['', elSample.elevation * 3.28, color]);
-        locs.push({ 
+        dataTable.push([`${running_distance.toFixed(2)} Mi`, elSample.elevation * 3.28, color]);
+        locs.push({
             lat: elSample.location.lat(), 
             lng: elSample.location.lng()
         });
