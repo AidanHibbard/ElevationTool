@@ -90,28 +90,48 @@
             </v-list-item-content>
         </v-list-item>
 
+        <v-list-item class="links"
+            v-if="this.markers.length > 1"
+        >
+            <v-list-item-title>
+                Share Hill
+            </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item class="links">
+            <v-list-item-title>Home</v-list-item-title>
+                <v-spacer />
+            <v-list-item-title>FAQ</v-list-item-title>
+                <v-spacer />
+            <v-list-item-title>About</v-list-item-title>
+        </v-list-item>
+
     </v-list>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
 export default {
-    name: 'Settings',
+    name: 'AppSettings',
     computed: {
         ...mapState([
             'darkMode',
             'transitMode', 
-            'MiKm'
-        ])
+            'MiKm',
+            'markers'
+        ]),
     },
     methods: {
         ...mapMutations([
             'toggleTheme',
             'toggleSystem',
             'toggleTransit'
-        ])
-    }
-}
+        ]),
+        shareHill: async () => {
+            
+        },
+    },
+};
 </script>
 
 <style scoped>
@@ -123,5 +143,9 @@ export default {
 }
 .v-list-item-title {
     width: 211px;
+}
+
+.links {
+    text-align: center;
 }
 </style>

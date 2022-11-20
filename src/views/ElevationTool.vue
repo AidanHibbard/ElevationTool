@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import dark_style from '@/utils/styles'
+import dark_style from '@/utils/map_styles/dark.js'
 import ErrorBanner from '@/components/ErrorBanner.vue';
 import Legend from '@/components/Legend.vue';
 import { computeDistance, createTable, Color } from '@/utils';

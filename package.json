@@ -10,7 +10,7 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
-    "@fawmi/vue-google-maps": "^0.9.72",
+    "@fawmi/vue-google-maps": "0.9.72",
     "@mdi/font": "5.9.55",
     "roboto-fontface": "*",
     "vue": "^3.2.33",

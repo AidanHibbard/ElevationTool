@@ -1,6 +1,6 @@
 import store from '@/store';
 let distance;
-function Color(grade) {
+export function Color(grade) {
     if (grade < 1) {
         return '#19a84c';
     } else if (grade < 3) {
@@ -13,10 +13,10 @@ function Color(grade) {
         return '#000000';
     }
 }
-function mapGrade(rise,run) {
+export function mapGrade(rise, run) {
 	return (rise/run*100).toFixed(2);
 }
-function computeDistance(route) {
+export function computeDistance(route) {
     let total = 0;
     route.legs.forEach((leg) => {
         total += leg.distance.value;
@@ -25,7 +25,7 @@ function computeDistance(route) {
     distance = total;
     return total.toString().substring(0, 4);
 };
-function createTable(results) {
+export function createTable(results) {
     let 
         dataTable = [],
         locs = [],
@@ -61,18 +61,17 @@ function createTable(results) {
         dataTable.push([`${running_distance.toFixed(2)} Mi`, elSample.elevation * 3.28, color]);
         locs.push({
             lat: elSample.location.lat(), 
-            lng: elSample.location.lng()
+            lng: elSample.location.lng(),
         });
     });
     // convert to feet of elevation
     minEl *= 3.28;
     maxEl *= 3.28;
-    const elchange = (maxEl - minEl).toFixed(0)
+    const elchange = (maxEl - minEl).toFixed(0);
     const grade = (elchange/(distance * 5280)*100).toFixed(2);
     store.commit("gradeInfo", {
         elchange,
         grade
-    })
+    });
     return { dataTable, locs };
 };
-export { computeDistance, createTable, Color };

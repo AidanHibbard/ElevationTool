@@ -56,9 +56,9 @@ export default {
     ...mapMutations([
       'setCenter',
       'clearMarkers'
-    ])
-  }
-}
+    ]),
+  },
+};
 </script>
 
 <style>
