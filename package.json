@@ -12,6 +12,7 @@
   "dependencies": {
     "@fawmi/vue-google-maps": "0.9.72",
     "@mdi/font": "5.9.55",
+    "resize-observer": "^1.0.4",
     "roboto-fontface": "*",
     "vue": "^3.2.33",
     "vue-router": "^4.0.14",
