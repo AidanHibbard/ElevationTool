@@ -1,6 +1,5 @@
 <template>
     <v-list>
-
         <v-list-item 
             two-line
             @click="toggleTheme"
@@ -92,20 +91,12 @@
 
         <v-list-item class="links"
             v-if="this.markers.length > 1"
+            @click="shareHill"
         >
             <v-list-item-title>
                 Share Hill
             </v-list-item-title>
         </v-list-item>
-
-        <v-list-item class="links">
-            <v-list-item-title>Home</v-list-item-title>
-                <v-spacer />
-            <v-list-item-title>FAQ</v-list-item-title>
-                <v-spacer />
-            <v-list-item-title>About</v-list-item-title>
-        </v-list-item>
-
     </v-list>
 </template>
 
@@ -128,7 +119,7 @@ export default {
             'toggleTransit'
         ]),
         shareHill: async () => {
-            
+
         },
     },
 };
@@ -143,9 +134,5 @@ export default {
 }
 .v-list-item-title {
     width: 211px;
-}
-
-.links {
-    text-align: center;
 }
 </style>

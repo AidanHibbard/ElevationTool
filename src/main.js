@@ -15,7 +15,7 @@ createApp(App)
     .use(vuetify)
     .use(VueGoogleMaps, {
         load: {
-            key: '//',
+            key: import.meta.env.VITE_MAPS_API_KEY,
             libraries: "places"
         },
     })

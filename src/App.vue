@@ -3,6 +3,7 @@
     <v-app-bar>
       <v-icon 
         color="blue lighten-2"
+        id="settings-toggle"
         @click="drawer = !drawer"
       >
         mdi-cog-outline
@@ -21,9 +22,7 @@
         @click="clearMarkers"
         id="clearbtn"
       >
-        Clear 
-        <br />
-        Map
+        Clear
       </v-btn>
     </v-app-bar>
 
@@ -74,5 +73,8 @@ export default {
 }
 #clearbtn {
   background-color: #dafaf7;
+}
+#settings-toggle {
+  margin-left: 10px;
 }
 </style>

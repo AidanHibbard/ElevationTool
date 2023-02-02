@@ -19,9 +19,9 @@ export default {
         }),
     },
     methods: {
-        ...mapMutations(['toggleError'])
-    }
-}
+        ...mapMutations(['toggleError']),
+    },
+};
 </script>
 
 <style scoped>

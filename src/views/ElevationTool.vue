@@ -5,7 +5,7 @@
         :center="center"
         :zoom="15"
         map-type-id="terrain"
-        style="width: 100vw;"
+        
         @click="addMarker"
         ref="mapRef"
     >
@@ -41,8 +41,8 @@
       <span id="elchange"> {{elchange}} ft Elevation change</span>
       <br />
       <span id="grade">{{grade}}% average grade</span>
+      <Legend />
     </div>
-    <Legend />
     <div>
       <span v-if="markers.length > 1">Click along the chart line to drop a pin</span>
       <span v-if="markers.length <= 1">Drop a couple pins to get started</span>
@@ -117,15 +117,15 @@ export default {
       this.$refs.mapRef.$mapPromise.then((map) => {
         if (this.darkMode) {
           map.setOptions({
-            styles: dark_style
+            styles: dark_style,
           });
         } else {
           map.setOptions({
-            styles: []
+            styles: [],
           });
-        }
-      })
-    }
+        };
+      });
+    },
   },
   methods: {
     ...mapMutations([
@@ -135,9 +135,8 @@ export default {
       'gradeInfo'
     ]),
     chartMarker: function () {
-      const chart = this.$refs.gChart.chartObject;
-      const event = chart.getSelection();
-      // Clicking out of bounds sends undefined 
+      const event = this.$refs.gChart.chartObject.getSelection();
+      // Clicking out of bounds sends an undefined event
       // Which unfortunetly breaks the chart
       if (!event[0]) { return; };
       // This should be revisited
@@ -161,7 +160,12 @@ export default {
         let waypoints = [];
         if (this.markers.length > 2) {
           for (let i=1; i < (this.markers.length - 1); i++) {
-            waypoints.push({ location: { lat: this.markers[i].lat, lng: this.markers[i].lng }})
+            waypoints.push({ 
+              location: { 
+                lat: this.markers[i].lat, 
+                lng: this.markers[i].lng 
+              }
+            });
           };
         };
         directionsService.route({
@@ -198,10 +202,6 @@ export default {
 </script>
 
 <style>
-* {
-  padding: 0;
-  margin: 0;
-}
 .vue-map-container {
   height: 50vh;
   width: 100vw;
