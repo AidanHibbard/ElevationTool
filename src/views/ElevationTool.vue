@@ -152,50 +152,50 @@ export default {
         });
         this.currentPath = [];
         this.selectMarker = false;
-      } else {
-        const 
-          directionsService = new window.google.maps.DirectionsService,
-          elevationService = new window.google.maps.ElevationService;
-        // There has to be a one liner way to filter this
-        let waypoints = [];
-        if (this.markers.length > 2) {
-          for (let i=1; i < (this.markers.length - 1); i++) {
-            waypoints.push({ 
-              location: { 
-                lat: this.markers[i].lat, 
-                lng: this.markers[i].lng 
-              }
-            });
-          };
-        };
-        directionsService.route({
-          origin: this.markers[0],
-          waypoints: waypoints,
-          destination: this.markers[this.markers.length - 1],
-          travelMode: this.transitMode
-        },
-        (response) => {
-          if (response.status !== "OK") {
-            this.toggleError(true);
-            console.error(`No route found with transit mode: ${this.transitMode}`);
-          } else {
-            this.toggleError(false);
-            this.polyline = window.google.maps.geometry.encoding.decodePath(
-              response.routes[0].overview_polyline
-            );
-            document.getElementById('info').innerHTML = computeDistance(response.routes[0])
-            elevationService.getElevationAlongPath({
-              // Else on length of overview path to use marker
-              path: response.routes[0].overview_path.length < 2 ? this.markers : response.routes[0].overview_path,
-              samples: 256
-            }, (results) => {
-              const etl = createTable(results);          
-              this.currentResults = etl.dataTable;
-              this.locs = etl.locs;
-            });
-          }
+        return;
+      }
+
+      const directionsService = new window.google.maps.DirectionsService();
+      const elevationService = new window.google.maps.ElevationService();
+      const waypoints = this.markers.slice(1, -1).map(marker => ({
+        location: {
+          lat: marker.lat,
+          lng: marker.lng
+        }
+      }));
+
+      directionsService.route({
+        origin: this.markers[0],
+        waypoints: waypoints,
+        destination: this.markers[this.markers.length - 1],
+        travelMode: this.transitMode
+      }, (response) => {
+        if (response.status !== "OK") {
+          this.toggleError(true);
+          console.error(`No route found with transit mode: ${this.transitMode}`);
+          return;
+        }
+
+        this.toggleError(false);
+
+        const overviewPath = response.routes[0].overview_path;
+        const path = overviewPath.length < 2 ? this.markers : overviewPath;
+
+        this.polyline = window.google.maps.geometry.encoding.decodePath(
+          response.routes[0].overview_polyline
+        );
+
+        document.getElementById('info').innerHTML = computeDistance(response.routes[0]);
+
+        elevationService.getElevationAlongPath({
+          path: path,
+          samples: 256
+        }, (results) => {
+          const etl = createTable(results);          
+          this.currentResults = etl.dataTable;
+          this.locs = etl.locs;
         });
-      };
+      });
     },
   },
 };

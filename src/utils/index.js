@@ -1,17 +1,14 @@
 import store from '@/store';
 let distance;
 export function Color(grade) {
-    if (grade < 1) {
-        return '#19a84c';
-    } else if (grade < 3) {
-        return '#0092ff';
-    } else if (grade < 6) {
-        return '#ffed3d';
-    } else if (grade < 9) {
-        return '#f6252b';
-    } else {
-        return '#000000';
-    }
+    const colorMap = [
+        { threshold: 1, color: '#19a84c' },
+        { threshold: 3, color: '#0092ff' },
+        { threshold: 6, color: '#ffed3d' },
+        { threshold: 9, color: '#f6252b' }
+    ];
+    const matchedColor = colorMap.find(color => grade < color.threshold);
+    return matchedColor ? matchedColor.color : '#000000';
 }
 export function mapGrade(rise, run) {
 	return (rise/run*100).toFixed(2);
@@ -43,24 +40,31 @@ export function createTable(results) {
     minEl = results[0].elevation;
     sample_distance = distance / 256;
     results.forEach((elSample, idx) => {
-        if (elSample.elevation > maxEl) maxEl = elSample.elevation;
-        if (elSample.elevation < minEl) minEl = elSample.elevation;
-        // Is the previous sample greater or lesser
-        if (idx > (prev - 1)) {
-            portion = mapGrade(((elSample.elevation) - results[idx-prev].elevation),portion_length);
-        } else {
-            portion = mapGrade(((elSample.elevation) - results[idx+prev].elevation),portion_length);
+        const { elevation } = elSample;
+        if (elevation > maxEl) maxEl = elevation;
+        if (elevation < minEl) minEl = elevation;
+    
+        const prevSample = results[idx - prev] || null;
+        const nextSample = results[idx + prev] || null;
+        const prevElevation = prevSample ? prevSample.elevation : elevation;
+        const nextElevation = nextSample ? nextSample.elevation : elevation;
+    
+        portion = mapGrade(elevation - prevElevation, portion_length);
+        if (idx <= prev - 1) {
+            portion = mapGrade(nextElevation - elevation, portion_length);
         }
-        // Sample Distance
+    
         running_distance += sample_distance;
-        // Max grade
-        let max;
-		if (Math.abs(portion) > maxEl) max = Math.abs(portion);
-		const color = `${Color(Math.abs(portion))}`;
-        // Each row
-        dataTable.push([`${running_distance.toFixed(2)} Mi`, elSample.elevation * 3.28, color]);
+    
+        const absPortion = Math.abs(portion);
+        if (absPortion > maxEl) maxEl = absPortion;
+    
+        const color = `${Color(absPortion)}`;
+    
+        dataTable.push([`${running_distance.toFixed(2)} Mi`, elevation * 3.28, color]);
+    
         locs.push({
-            lat: elSample.location.lat(), 
+            lat: elSample.location.lat(),
             lng: elSample.location.lng(),
         });
     });
