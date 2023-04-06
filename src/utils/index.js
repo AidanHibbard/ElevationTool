@@ -7,8 +7,9 @@ export function Color(grade) {
         { threshold: 6, color: '#ffed3d' },
         { threshold: 9, color: '#f6252b' }
     ];
+    const above_grade = store.state.darkMode ? '#ffffff' : '#000000';
     const matchedColor = colorMap.find(color => grade < color.threshold);
-    return matchedColor ? matchedColor.color : '#000000';
+    return matchedColor ? matchedColor.color : above_grade;
 }
 export function mapGrade(rise, run) {
 	return (rise/run*100).toFixed(2);

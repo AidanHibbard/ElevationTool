@@ -21,7 +21,7 @@
             <v-list-item-content>
                 <v-list-item-title>
                     <span
-                        :class="[!MiKm ? 'active' : '']"
+                        :class="[MiKm ? '' : 'active']"
                     >MI </span>
                     / 
                     <span
@@ -88,15 +88,29 @@
                 </v-list-item-title>
             </v-list-item-content>
         </v-list-item>
-
         <v-list-item class="links"
-            v-if="this.markers.length > 1"
-            @click="shareHill"
+            v-if="this.markers.length > 1 && !generating && !link"
+            @click="saveHill"
         >
             <v-list-item-title>
-                Share Hill
+                Save Hill
             </v-list-item-title>
         </v-list-item>
+        <v-list-item class="links"
+            v-if="this.markers.length > 1 && generating && !link"
+        >
+            <v-list-item-title>
+                Building Link...
+            </v-list-item-title>
+        </v-list-item>
+        <a v-if="this.markers.length > 1 && !generating && link" :href="link" target="_blank" @click="saveHill">
+            <v-list-item class="links">
+                <v-list-item-title>
+                    Click to save
+                </v-list-item-title>
+            </v-list-item>
+        </a>
+
     </v-list>
 </template>
 
@@ -104,6 +118,12 @@
 import { mapState, mapMutations } from 'vuex';
 export default {
     name: 'AppSettings',
+    data () {
+        return {
+            generating: false,
+            link: false,
+        }
+    },  
     computed: {
         ...mapState([
             'darkMode',
@@ -118,8 +138,38 @@ export default {
             'toggleSystem',
             'toggleTransit'
         ]),
-        shareHill: async () => {
-
+        saveHill: function() {
+            if (!this.link) {
+                this.generating = true;
+                // Markers Structure
+                // 33.93729,-106.85761/33.91629,-106.866761/33.98729,-106.85861
+                let maps_link = `www.google.com/maps/dir/`;
+                this.markers.forEach((m) => {
+                    maps_link += `${String(m.lat)},${String(m.lng)}/`;
+                });
+                this.link = maps_link;
+                this.generating = false;
+                console.log(this.link);
+            } else {
+                this.link = false;
+                this.generating = false;
+            }
+        },
+        shareHill: function() {
+            if (!this.link) {
+                this.generating = true;
+                // Markers Structure
+                // 33.93729,-106.85761/33.91629,-106.866761/33.98729,-106.85861
+                let maps_link = `www.google.com/maps/dir/`;
+                this.markers.forEach((m) => {
+                    maps_link += `${m.lat},${m.lng}/`;
+                });
+                this.link = maps_link;
+                this.generating = false;
+            } else {
+                this.link = false;
+                this.generating = false;
+            }
         },
     },
 };

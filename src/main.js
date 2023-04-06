@@ -7,6 +7,8 @@ import { loadFonts } from './plugins/webfontloader';
 import VueGoogleMaps from '@fawmi/vue-google-maps';
 import VueGoogleCharts from "vue3-googl-chart";
 
+import './assets/dark.css';
+
 loadFonts()
 
 createApp(App)

@@ -1,0 +1,49 @@
+:root {
+    --main-bg-color: #121212;
+}
+div.darkMode div header .v-toolbar__content {
+    background-color: #212121;
+}
+div.darkMode div header .v-toolbar__content input.pac-target-input {
+    border-color: whitesmoke;
+    color: whitesmoke;
+}
+div.darkMode div header .v-toolbar__content #clearbtn {
+    background-color: darkslategray;
+}
+div.darkMode div nav {
+    background-color: var(--main-bg-color);
+    color: whitesmoke;
+}
+div.darkMode main {
+    background-color: var(--main-bg-color);
+}
+div.darkMode main #container #grade_info {
+    color: whitesmoke;
+    background-color: var(--main-bg-color);
+}
+div.darkMode main #container > 
+div:nth-child(3) > 
+div:nth-child(2) > 
+div:nth-child(1) > 
+div:nth-child(1) > 
+div:nth-child(1) > 
+svg:nth-child(1) > 
+rect:nth-child(2) {
+    fill: var(--main-bg-color);
+}
+div.darkMode main #container > 
+div:nth-child(3) > 
+div:nth-child(2) > 
+div:nth-child(1) > 
+div:nth-child(1) > 
+div:nth-child(1) > 
+svg:nth-child(1) 
+text {
+    fill: whitesmoke;
+}
+div.darkMode main #container #grade_info .rightRadius {
+    background-color: var(--main-bg-color) !important;
+    color: whitesmoke !important;
+    border: 1px solid whitesmoke;
+}

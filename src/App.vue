@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :class="[darkMode ? 'darkMode' : '']">
     <v-app-bar>
       <v-icon 
         color="blue lighten-2"
@@ -8,7 +8,6 @@
       >
         mdi-cog-outline
       </v-icon>
-
       <v-spacer />
       
       <GMapAutocomplete
@@ -40,7 +39,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 import Settings from '@/components/Settings.vue';
 export default {
   name: 'App',
@@ -51,6 +50,11 @@ export default {
     drawer: false,
     group: null,
   }),
+  computed: {
+    ...mapState({
+      darkMode: (state) => state.darkMode,
+    }),
+  },
   methods: {
     ...mapMutations([
       'setCenter',
