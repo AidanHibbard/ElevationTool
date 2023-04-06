@@ -28,7 +28,7 @@ export function createTable(results) {
         dataTable = [],
         locs = [],
         prev = 8,
-        portion,
+        portion = 0,
         portion_length,
         sample_distance,
         running_distance = 0,
