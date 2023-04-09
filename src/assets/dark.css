@@ -4,6 +4,9 @@
 div.google-visualization-tooltip > ul > li > span {
     color: black;
 }
+#container > div:nth-child(3) > span:nth-child(1) {
+    color: whitesmoke;
+}
 div.darkMode div header .v-toolbar__content {
     background-color: #212121;
 }
