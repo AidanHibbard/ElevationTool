@@ -9,7 +9,7 @@ import VueGoogleCharts from "vue3-googl-chart";
 
 import './assets/dark.css';
 
-loadFonts()
+loadFonts();
 
 createApp(App)
     .use(router)
@@ -22,4 +22,4 @@ createApp(App)
         },
     })
     .use(VueGoogleCharts)
-    .mount('#app')
+    .mount('#app');

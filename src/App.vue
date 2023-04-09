@@ -22,6 +22,8 @@
         id="clearbtn"
       >
         Clear
+        <br> 
+        Map
       </v-btn>
     </v-app-bar>
 

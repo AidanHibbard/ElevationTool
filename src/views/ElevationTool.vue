@@ -80,7 +80,8 @@ export default {
         chart: {
           title: 'Elevation change',
           subtitles: 'Samples, Elevation',
-        }
+        },
+        tooltip: { isHtml: true }
       },
       chartEvents: {
         select: () => {
