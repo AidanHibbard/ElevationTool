@@ -9,18 +9,25 @@ const store = createStore({
 
             // Settings
             darkMode: false,
-            MiKm: false, // MI Default
+            MiKm: 'MI',
             transitMode: 'DRIVING',
 
             // Grade Info
             grade: 0,
             elchange: 0,
 
+            // Route info
+            distance: 0,
+
+
         };
     },
     mutations: {
         setCenter (state, loc) {
             state.center = loc.geometry.location;
+        },
+        setDistance(state, distance) {
+            state.distance = distance;
         },
         addMarker: (state, loc) => {
             state.markers.push({
@@ -38,8 +45,8 @@ const store = createStore({
         toggleTheme: (state) => {
             state.darkMode = !state.darkMode;
         },
-        toggleSystem: (state) => {
-            state.MiKm = !state.MiKm;
+        toggleConversion: (state, system) => {
+            state.MiKm = system;
         },
         toggleTransit: (state, type) => {
             state.transitMode = type;

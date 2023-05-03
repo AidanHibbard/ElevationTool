@@ -4,7 +4,7 @@
 div.google-visualization-tooltip > ul > li > span {
     color: black;
 }
-#container > div:nth-child(3) > span:nth-child(1) {
+#app div.v-application.v-theme--light.v-layout.v-layout--full-height.v-locale--is-ltr.darkMode div.v-application__wrap main.v-main div#container div span {
     color: whitesmoke;
 }
 div.darkMode div header .v-toolbar__content {

@@ -36,9 +36,9 @@
       />
     </GMapMap>
     <div id="grade_info">
-      <span id="info">0</span> Miles
+      <span id="info">0</span> {{ MiKm }}
       <br />
-      <span id="elchange"> {{elchange}} ft Elevation change</span>
+      <span id="elchange"> {{elchange}} {{ MiKm === 'MI' ? 'feet' : 'meters' }} Elevation change</span>
       <br />
       <span id="grade">{{grade}}% average grade</span>
       <Legend />
@@ -80,6 +80,7 @@ export default {
         chart: {
           title: 'Elevation change',
           subtitles: 'Samples, Elevation',
+          //curveType: 'function',
         },
         tooltip: { isHtml: true }
       },
@@ -99,6 +100,8 @@ export default {
       darkMode: (state) => state.darkMode,
       elchange: (state) => state.elchange,
       grade: (state) => state.grade,
+      MiKm: (state) => state.MiKm,
+      
     }),
     strokeColor() {
       return Color(this.grade);

@@ -16,18 +16,18 @@
 
         <v-list-item 
             two-line
-            @click="toggleSystem"
+            @click="toggleConversion(MiKm === 'MI' ? 'KM' : 'MI')"
         >
             <v-list-item-content>
                 <v-list-item-title>
                     <span
-                        :class="[MiKm ? '' : 'active']"
+                        :class="[MiKm === 'MI' ? 'active' : '']"
                     >MI </span>
                     / 
                     <span
-                        :class="[MiKm ? 'active' : '']"
+                        :class="[MiKm === 'KM' ? 'active' : '']"
                     >KM </span>
-                    <v-icon v-if="MiKm === true">mdi-toggle-switch</v-icon>
+                    <v-icon v-if="MiKm === 'KM'">mdi-toggle-switch</v-icon>
                     <v-icon v-else>mdi-toggle-switch-off</v-icon>
                 </v-list-item-title>
                 <v-list-item-subtitle>Swap between Metric or Imperial</v-list-item-subtitle>
@@ -135,7 +135,7 @@ export default {
     methods: {
         ...mapMutations([
             'toggleTheme',
-            'toggleSystem',
+            'toggleConversion',
             'toggleTransit'
         ]),
         saveHill: function() {
@@ -153,7 +153,7 @@ export default {
             } else {
                 this.link = false;
                 this.generating = false;
-            }
+            };
         },
         shareHill: function() {
             if (!this.link) {
@@ -169,7 +169,7 @@ export default {
             } else {
                 this.link = false;
                 this.generating = false;
-            }
+            };
         },
     },
 };
