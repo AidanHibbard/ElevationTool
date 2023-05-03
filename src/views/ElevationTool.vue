@@ -36,7 +36,7 @@
       />
     </GMapMap>
     <div id="grade_info">
-      <span id="info">0</span> {{ MiKm }}
+      <span id="info">{{ distance }}</span> {{ MiKm }}
       <br />
       <span id="elchange"> {{elchange}} {{ MiKm === 'MI' ? 'feet' : 'meters' }} Elevation change</span>
       <br />
@@ -73,6 +73,7 @@ export default {
   data () {
     return {
       selectMarker: false,
+      distance: 0,
       locs: null,
       currentResults: [],
       polyline: [],
@@ -80,7 +81,6 @@ export default {
         chart: {
           title: 'Elevation change',
           subtitles: 'Samples, Elevation',
-          //curveType: 'function',
         },
         tooltip: { isHtml: true }
       },
@@ -101,7 +101,6 @@ export default {
       elchange: (state) => state.elchange,
       grade: (state) => state.grade,
       MiKm: (state) => state.MiKm,
-      
     }),
     strokeColor() {
       return Color(this.grade);
@@ -156,6 +155,7 @@ export default {
         });
         this.currentPath = [];
         this.selectMarker = false;
+        this.distance = 0;
         return;
       }
 
@@ -189,15 +189,15 @@ export default {
           response.routes[0].overview_polyline
         );
 
-        document.getElementById('info').innerHTML = computeDistance(response.routes[0]);
+        this.distance = computeDistance(response.routes[0]);
 
         elevationService.getElevationAlongPath({
           path: path,
           samples: 256
         }, (results) => {
-          const etl = createTable(results);          
-          this.currentResults = etl.dataTable;
-          this.locs = etl.locs;
+          const { dataTable, locs } = createTable(results);          
+          this.currentResults = dataTable;
+          this.locs = locs;
         });
       });
     },
