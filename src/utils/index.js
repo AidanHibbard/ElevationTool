@@ -15,13 +15,20 @@ export function mapGrade(rise, run) {
 	return (rise/run*100).toFixed(2);
 }
 export function computeDistance(route) {
+    const unit = store.state.MiKm;
     let total = 0;
     route.legs.forEach((leg) => {
         total += leg.distance.value;
     });
-    total = (total / 1000) / 1.609;
+    if (unit === 'MI') {
+        // Convert from meters to miles
+        total = total / 1609.344;
+    } else if (unit === 'KM') {
+        // Convert from meters to kilometers
+        total = total / 1000;
+    };
     distance = total;
-    return total.toString().substring(0, 4);
+    return total.toFixed(2);
 };
 export function createTable(results) {
     let 
@@ -34,7 +41,7 @@ export function createTable(results) {
         running_distance = 0,
         minEl, 
         maxEl = 0;
-    portion_length = (distance * 1609) / (256/prev)
+    portion_length = (distance * (store.state.MiKm === 'MI' ? 1609 : 1000)) / (256/prev);
     // Create Columns expected as [0]
     dataTable.push(['Distance', 'Elevation', { role: 'style' }]);
     // Set first elevation to check if rest are <
@@ -62,7 +69,11 @@ export function createTable(results) {
     
         const color = `${Color(absPortion)}`;
     
-        dataTable.push([`${running_distance.toFixed(2)} Mi`, elevation * 3.28, color]);
+        dataTable.push([
+            `${running_distance.toFixed(2)} ${store.state.MiKm === 'MI' ? 'MI' : 'KM'}`, 
+            elevation * (store.state.MiKm === 'MI' ? 3.28 : 1), 
+            color
+        ]);
     
         locs.push({
             lat: elSample.location.lat(),
@@ -70,10 +81,10 @@ export function createTable(results) {
         });
     });
     // convert to feet of elevation
-    minEl *= 3.28;
-    maxEl *= 3.28;
+    minEl *= (store.state.MiKm === 'MI' ? 3.28 : 1);
+    maxEl *= (store.state.MiKm === 'MI' ? 3.28 : 1);
     const elchange = (maxEl - minEl).toFixed(0);
-    const grade = (elchange/(distance * 5280)*100).toFixed(2);
+    const grade = (elchange/(distance * (store.state.MiKm === 'MI' ? 5280 : 1000))*100).toFixed(2);
     store.commit("gradeInfo", {
         elchange,
         grade
