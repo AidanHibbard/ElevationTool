@@ -31,34 +31,30 @@ export function computeDistance(route) {
     return total.toFixed(2);
 };
 export function createTable(results) {
-    let 
-        dataTable = [],
-        locs = [],
-        prev = 8,
-        portion = 0,
-        portion_length,
-        sample_distance,
-        running_distance = 0,
-        minEl, 
-        maxEl = 0;
-    portion_length = (distance * (store.state.MiKm === 'MI' ? 1609 : 1000)) / (256/prev);
-    // Create Columns expected as [0]
-    dataTable.push(['Distance', 'Elevation', { role: 'style' }]);
-    // Set first elevation to check if rest are <
-    minEl = results[0].elevation;
-    sample_distance = distance / 256;
-    results.forEach((elSample, idx) => {
+    const dataTable = [['Distance', 'Elevation', { role: 'style' }]];
+    const locs = [];
+    const prev = 8;
+    const sample_distance = distance / 256;
+    const portion_length = (distance * (store.state.MiKm === 'MI' ? 1609 : 1000)) / (256 / prev);
+    let running_distance = 0;
+    let minEl = results[0].elevation;
+    let maxEl = 0;
+    const conversionFactor = store.state.MiKm === 'MI' ? 3.28 : 1;
+
+    for (let i = 0; i < results.length; i++) {
+        const elSample = results[i];
         const { elevation } = elSample;
+    
         if (elevation > maxEl) maxEl = elevation;
         if (elevation < minEl) minEl = elevation;
     
-        const prevSample = results[idx - prev] || null;
-        const nextSample = results[idx + prev] || null;
+        const prevSample = results[i - prev] || null;
+        const nextSample = results[i + prev] || null;
         const prevElevation = prevSample ? prevSample.elevation : elevation;
         const nextElevation = nextSample ? nextSample.elevation : elevation;
     
-        portion = mapGrade(elevation - prevElevation, portion_length);
-        if (idx <= prev - 1) {
+        let portion = mapGrade(elevation - prevElevation, portion_length);
+        if (i <= prev - 1) {
             portion = mapGrade(nextElevation - elevation, portion_length);
         }
     
@@ -66,23 +62,21 @@ export function createTable(results) {
     
         const absPortion = Math.abs(portion);
         if (absPortion > maxEl) maxEl = absPortion;
-    
-        const color = `${Color(absPortion)}`;
-    
-        dataTable.push([
-            `${running_distance.toFixed(2)} ${store.state.MiKm === 'MI' ? 'MI' : 'KM'}`, 
-            elevation * (store.state.MiKm === 'MI' ? 3.28 : 1), 
-            color
-        ]);
-    
-        locs.push({
-            lat: elSample.location.lat(),
-            lng: elSample.location.lng(),
-        });
-    });
-    // convert to feet of elevation
-    minEl *= (store.state.MiKm === 'MI' ? 3.28 : 1);
-    maxEl *= (store.state.MiKm === 'MI' ? 3.28 : 1);
+            const color = Color(absPortion);
+
+            dataTable.push([
+                `${running_distance.toFixed(2)} ${store.state.MiKm}`,
+                elevation * conversionFactor,
+                color
+            ]);
+
+            locs.push({
+                lat: elSample.location.lat(),
+                lng: elSample.location.lng(),
+            });
+        };
+    minEl *= conversionFactor;
+    maxEl *= conversionFactor;
     const elchange = (maxEl - minEl).toFixed(0);
     const grade = (elchange/(distance * (store.state.MiKm === 'MI' ? 5280 : 1000))*100).toFixed(2);
     store.commit("gradeInfo", {

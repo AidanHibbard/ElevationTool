@@ -26,8 +26,8 @@
         @click="deleteMarker(index)"
       />
       <GMapPolyline
-        v-if="markers.length > 1"
-        :path="polyline"
+        v-if="markers.length > 1 && locs"
+        :path="locs"
         :editable="false"
         ref="polyline"
         :options="{
