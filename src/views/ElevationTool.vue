@@ -157,7 +157,7 @@ export default {
         this.selectMarker = false;
         this.distance = 0;
         return;
-      }
+      };
 
       const directionsService = new window.google.maps.DirectionsService();
       const elevationService = new window.google.maps.ElevationService();
@@ -165,7 +165,7 @@ export default {
         location: {
           lat: marker.lat,
           lng: marker.lng
-        }
+        },
       }));
 
       directionsService.route({
@@ -178,7 +178,7 @@ export default {
           this.toggleError(true);
           console.error(`No route found with transit mode: ${this.transitMode}`);
           return;
-        }
+        };
 
         this.toggleError(false);
 
