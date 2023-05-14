@@ -141,30 +141,8 @@ export default {
         saveHill: function() {
             if (!this.link) {
                 this.generating = true;
-                // Markers Structure
-                // 33.93729,-106.85761/33.91629,-106.866761/33.98729,-106.85861
-                let maps_link = `www.google.com/maps/dir/`;
-                this.markers.forEach((m) => {
-                    maps_link += `${String(m.lat)},${String(m.lng)}/`;
-                });
-                this.link = maps_link;
-                this.generating = false;
-                console.log(this.link);
-            } else {
-                this.link = false;
-                this.generating = false;
-            };
-        },
-        shareHill: function() {
-            if (!this.link) {
-                this.generating = true;
-                // Markers Structure
-                // 33.93729,-106.85761/33.91629,-106.866761/33.98729,-106.85861
-                let maps_link = `www.google.com/maps/dir/`;
-                this.markers.forEach((m) => {
-                    maps_link += `${m.lat},${m.lng}/`;
-                });
-                this.link = maps_link;
+                const m = this.markers[0];
+                this.link = `https://www.google.com/maps/search/?api=1&query=${m.lat},${m.lng}`;
                 this.generating = false;
             } else {
                 this.link = false;
