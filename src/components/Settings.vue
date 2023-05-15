@@ -110,12 +110,17 @@
                 </v-list-item-title>
             </v-list-item>
         </a>
-
+        <v-list-item @click="shareHill" v-if="this.markers.length > 1">
+            <v-list-item-title>
+                Share Hill
+            </v-list-item-title>
+        </v-list-item>
     </v-list>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import generatePolyline from '../utils/encoding/encode';
 export default {
     name: 'AppSettings',
     data () {
@@ -147,6 +152,15 @@ export default {
             } else {
                 this.link = false;
                 this.generating = false;
+            };
+        },
+        shareHill: async function() {
+            try {
+                console.log(`${window.location.href + generatePolyline(this.markers)}`)
+                await navigator.clipboard.writeText(`${window.location.href + generatePolyline(this.markers)}`)
+                alert('Copied link!');
+            } catch (e) {
+                alert('Failed to copy: ', e);
             };
         },
     },

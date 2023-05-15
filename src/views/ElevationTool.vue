@@ -59,38 +59,50 @@
 </template>
 
 <script>
-import dark_style from '@/utils/map_styles/dark.js'
+import decodePolyline from '@/utils/encoding/decode';
+import dark_style from '@/utils/map_styles/dark.js';
 import ErrorBanner from '@/components/ErrorBanner.vue';
 import Legend from '@/components/Legend.vue';
 import { computeDistance, createTable, Color } from '@/utils';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 export default {
   name: 'ElevationTool',
+  mounted () {
+    const route = useRoute();
+    const store = useStore();
+    if (route.params.polyline) {
+      const markers = decodePolyline(route.params.polyline);
+      if (markers.length > 1) {
+        this.$refs.mapRef.$mapPromise.then(() => {
+          store.state.markers = markers;
+        });
+      };
+    };
+  },
   components: {
     Legend,
     ErrorBanner
   },
-  data () {
-    return {
-      selectMarker: false,
-      distance: 0,
-      locs: null,
-      currentResults: [],
-      polyline: [],
-      chartOptions: {
-        chart: {
-          title: 'Elevation change',
-          subtitles: 'Samples, Elevation',
-        },
-        tooltip: { isHtml: true }
+  data: () => ({
+    selectMarker: false,
+    distance: 0,
+    locs: null,
+    currentResults: [],
+    polyline: [],
+    chartOptions: {
+      chart: {
+        title: 'Elevation change',
+        subtitles: 'Samples, Elevation',
       },
-      chartEvents: {
-        select: () => {
-          this.chartMarker();
-        },
+      tooltip: { isHtml: true }
+    },
+    chartEvents: {
+      select: () => {
+        this.chartMarker();
       },
-    };
-  },
+    },
+  }),
   computed: {
     ...mapState({
       center: (state) => state.center,
@@ -161,7 +173,7 @@ export default {
 
       const directionsService = new window.google.maps.DirectionsService();
       const elevationService = new window.google.maps.ElevationService();
-      const waypoints = this.markers.slice(1, -1).map(marker => ({
+      const waypoints = this.markers.slice(1, -1).map((marker) => ({
         location: {
           lat: marker.lat,
           lng: marker.lng
@@ -188,7 +200,7 @@ export default {
         this.polyline = window.google.maps.geometry.encoding.decodePath(
           response.routes[0].overview_polyline
         );
-
+      
         this.distance = computeDistance(response.routes[0]);
 
         elevationService.getElevationAlongPath({
