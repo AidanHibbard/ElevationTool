@@ -156,8 +156,8 @@ export default {
         },
         shareHill: async function() {
             try {
-                console.log(`${window.location.href + generatePolyline(this.markers)}`)
-                await navigator.clipboard.writeText(`${window.location.href + generatePolyline(this.markers)}`)
+                console.log(`${window.location.href}${generatePolyline(this.markers)}`)
+                await navigator.clipboard.writeText(`${window.location.href}${generatePolyline(this.markers)}`)
                 alert('Copied link!');
             } catch (e) {
                 alert('Failed to copy: ', e);

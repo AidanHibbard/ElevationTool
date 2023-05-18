@@ -69,15 +69,23 @@ import { useRoute } from 'vue-router';
 export default {
   name: 'ElevationTool',
   mounted () {
+    const self = this;
     const route = useRoute();
     const store = useStore();
     if (route.params.polyline) {
       const markers = decodePolyline(route.params.polyline);
       if (markers.length > 1) {
         this.$refs.mapRef.$mapPromise.then(() => {
+          store.state.center = markers[0];
           store.state.markers = markers;
         });
       };
+    };
+
+    this.chartEvents = {
+      select: function () {
+        self.chartMarker();
+      },
     };
   },
   components: {
@@ -97,11 +105,7 @@ export default {
       },
       tooltip: { isHtml: true }
     },
-    chartEvents: {
-      select: () => {
-        this.chartMarker();
-      },
-    },
+    chartEvents: null,
   }),
   computed: {
     ...mapState({
