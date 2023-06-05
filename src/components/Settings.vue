@@ -93,17 +93,10 @@
             @click="saveHill"
         >
             <v-list-item-title>
-                Save Hill
+                Save in Maps
             </v-list-item-title>
         </v-list-item>
-        <v-list-item class="links"
-            v-if="this.markers.length > 1 && generating && !link"
-        >
-            <v-list-item-title>
-                Building Link...
-            </v-list-item-title>
-        </v-list-item>
-        <a v-if="this.markers.length > 1 && !generating && link" :href="link" target="_blank" @click="saveHill">
+        <a v-if="this.markers.length > 1 && link" :href="link" target="_blank" @click="saveHill">
             <v-list-item class="links">
                 <v-list-item-title>
                     Click to save
@@ -125,7 +118,6 @@ export default {
     name: 'AppSettings',
     data () {
         return {
-            generating: false,
             link: false,
         }
     },  
@@ -144,18 +136,14 @@ export default {
             'toggleTransit'
         ]),
         saveHill: function() {
-            if (!this.link) {
-                this.generating = true;
-                const m = this.markers[0];
-                this.link = `https://www.google.com/maps/search/?api=1&query=${m.lat},${m.lng}`;
-                this.generating = false;
-            } else {
-                this.link = false;
-                this.generating = false;
-            };
+            const m = this.markers[0];
+            this.link = `https://www.google.com/maps/search/?api=1&query=${m.lat},${m.lng}`;
         },
         shareHill: async function() {
             try {
+                // This is a terrible way to do this but it works
+                // Grab the users current url up to the #/
+                // Then append the #/ so the URL is always "fresh" to add the encoded markers
                 const base_url = `${window.location.href.split('#/')[0]}#/`;
                 console.log(`${base_url}${generatePolyline(this.markers)}`)
                 await navigator.clipboard.writeText(`${base_url}${generatePolyline(this.markers)}`)

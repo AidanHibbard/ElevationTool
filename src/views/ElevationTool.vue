@@ -17,13 +17,14 @@
         @click="selectMarker = false"
       />
       <GMapMarker
-        v-for="(m, index) in markers"
-        :label="String(index + 1)"
+        v-for="(m, idx) in markers"
+        :label="String(idx + 1)"
         :key="index"
         :position="m"
-        :draggable="false"
         :clickable="true"
-        @click="deleteMarker(index)"
+        @click="deleteMarker(idx)"
+        :draggable="true"
+        @dragend="handleMarkerDrag(idx, $event)"
       />
       <GMapPolyline
         v-if="markers.length > 1 && locs"
@@ -151,8 +152,17 @@ export default {
       'addMarker',
       'deleteMarker',
       'toggleError',
-      'gradeInfo'
+      'gradeInfo',
+      'updateMarker'
     ]),
+    handleMarkerDrag(idx, e) {
+      const latLng = {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+      };
+      this.updateMarker({ idx, latLng });
+      this.createRoute();
+    },
     chartMarker: function () {
       const event = this.$refs.gChart.chartObject.getSelection();
       // Clicking out of bounds sends an undefined event

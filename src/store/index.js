@@ -35,6 +35,9 @@ const store = createStore({
                 lng: loc.latLng.lng()
             });
         },
+        updateMarker(state, { idx, latLng }) {
+            state.markers.splice(idx, 1, latLng);
+        },
         deleteMarker: (state, idx) => {
             state.markers.splice(idx, 1);
         },
