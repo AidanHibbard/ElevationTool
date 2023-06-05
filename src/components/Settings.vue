@@ -89,7 +89,7 @@
             </v-list-item-content>
         </v-list-item>
         <v-list-item class="links"
-            v-if="this.markers.length > 1 && !generating && !link"
+            v-if="this.markers.length > 1 && !link"
             @click="saveHill"
         >
             <v-list-item-title>

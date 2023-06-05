@@ -19,7 +19,7 @@
       <GMapMarker
         v-for="(m, idx) in markers"
         :label="String(idx + 1)"
-        :key="index"
+        :key="idx"
         :position="m"
         :clickable="true"
         @click="deleteMarker(idx)"
