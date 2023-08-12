@@ -1,6 +1,5 @@
 import encode from './encode.js';
 export default function generatePolyline(points) {
-  console.log(points)
     const factor = 1e5;
     let prev_lat = 0;
     let prev_lng = 0;
