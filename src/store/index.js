@@ -14,7 +14,7 @@ const store = createStore({
 
             // Grade Info
             grade: 0,
-            elchange: 0,
+            el_change: 0,
 
             // Route info
             distance: 0,
@@ -59,7 +59,7 @@ const store = createStore({
         },
         gradeInfo: (state, payload) => {
             state.grade = payload.grade;
-            state.elchange = payload.elchange;
+            state.el_change = payload.el_change;
         }
     },
 });

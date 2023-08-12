@@ -39,7 +39,7 @@
     <div id="grade_info">
       <span id="info">{{ distance }}</span> {{ MiKm }}
       <br />
-      <span id="elchange"> {{elchange}} {{ MiKm === 'MI' ? 'feet' : 'meters' }} Elevation change</span>
+      <span id="el_change"> {{el_change}} {{ MiKm === 'MI' ? 'feet' : 'meters' }} Elevation change</span>
       <br />
       <span id="grade">{{grade}}% average grade</span>
       <Legend />
@@ -115,7 +115,7 @@ export default {
       transitMode: (state) => state.transitMode,
       error: (state) => state.error,
       darkMode: (state) => state.darkMode,
-      elchange: (state) => state.elchange,
+      el_change: (state) => state.el_change,
       grade: (state) => state.grade,
       MiKm: (state) => state.MiKm,
     }),
@@ -177,7 +177,7 @@ export default {
       if (this.markers.length <= 1) { 
         this.gradeInfo({
           grade: 0,
-          elchange: 0
+          el_change: 0
         });
         this.currentPath = [];
         this.selectMarker = false;

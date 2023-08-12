@@ -1,19 +1,21 @@
 import encode from './encode.js';
 export default function generatePolyline(points) {
+  console.log(points)
     const factor = 1e5;
-    let prevLat = 0;
-    let prevLng = 0;
+    let prev_lat = 0;
+    let prev_lng = 0;
     let result = '';
     for (const point of points) {
         const lat = Math.round(point.lat * factor);
         const lng = Math.round(point.lng * factor);
-        const dLat = lat - prevLat;
-        const dLng = lng - prevLng;
-        prevLat = lat;
-        prevLng = lng;
-        result += encode(dLat) + encode(dLng);
+        const d_lat = lat - prev_lat;
+        const d_lng = lng - prev_lng;
+        prev_lat = lat;
+        prev_lng = lng;
+        result += encode(d_lat) + encode(d_lng);
     };
 
-    return result;
+    return encodeURI(result);
 };
+
 

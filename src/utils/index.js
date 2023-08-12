@@ -37,16 +37,16 @@ export function createTable(results) {
     const sample_distance = distance / 256;
     const portion_length = (distance * (store.state.MiKm === 'MI' ? 1609 : 1000)) / (256 / prev);
     let running_distance = 0;
-    let minEl = results[0].elevation;
-    let maxEl = 0;
-    const conversionFactor = store.state.MiKm === 'MI' ? 3.28 : 1;
+    let min_el = results[0].elevation;
+    let max_el = 0;
+    const conversion_factor = store.state.MiKm === 'MI' ? 3.28 : 1;
 
     for (let i = 0; i < results.length; i++) {
         const elSample = results[i];
         const { elevation } = elSample;
     
-        if (elevation > maxEl) maxEl = elevation;
-        if (elevation < minEl) minEl = elevation;
+        if (elevation > max_el) max_el = elevation;
+        if (elevation < min_el) min_el = elevation;
     
         const prevSample = results[i - prev] || null;
         const nextSample = results[i + prev] || null;
@@ -61,12 +61,12 @@ export function createTable(results) {
         running_distance += sample_distance;
     
         const absPortion = Math.abs(portion);
-        if (absPortion > maxEl) maxEl = absPortion;
+        if (absPortion > max_el) max_el = absPortion;
             const color = Color(absPortion);
 
             dataTable.push([
                 `${running_distance.toFixed(2)} ${store.state.MiKm}`,
-                elevation * conversionFactor,
+                elevation * conversion_factor,
                 color
             ]);
 
@@ -75,12 +75,12 @@ export function createTable(results) {
                 lng: elSample.location.lng(),
             });
         };
-    minEl *= conversionFactor;
-    maxEl *= conversionFactor;
-    const elchange = (maxEl - minEl).toFixed(0);
-    const grade = (elchange/(distance * (store.state.MiKm === 'MI' ? 5280 : 1000))*100).toFixed(2);
+    min_el *= conversion_factor;
+    max_el *= conversion_factor;
+    const el_change = (max_el - min_el).toFixed(0);
+    const grade = (el_change/(distance * (store.state.MiKm === 'MI' ? 5280 : 1000))*100).toFixed(2);
     store.commit("gradeInfo", {
-        elchange,
+        el_change,
         grade
     });
     return { dataTable, locs };
