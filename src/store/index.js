@@ -18,8 +18,6 @@ const store = createStore({
 
             // Route info
             distance: 0,
-
-
         };
     },
     mutations: {

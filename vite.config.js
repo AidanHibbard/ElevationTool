@@ -27,6 +27,12 @@ export default defineConfig({
     },
     globals: true,
   },
+  optimizeDeps: {
+    include: [
+      "vue-google-maps-community-fork",
+      "fast-deep-equal",
+    ],
+  },
 
   /* remove the need to specify .vue files https://vitejs.dev/config/#resolve-extensions
   resolve: {

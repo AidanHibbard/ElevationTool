@@ -4,8 +4,8 @@ import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 import { loadFonts } from './plugins/webfontloader';
-import VueGoogleMaps from '@fawmi/vue-google-maps';
-import VueGoogleCharts from "vue3-googl-chart";
+import VueGoogleMaps from 'vue-google-maps-community-fork'
+import VueGoogleCharts from 'vue3-googl-chart';
 
 import './assets/dark.css';
 
