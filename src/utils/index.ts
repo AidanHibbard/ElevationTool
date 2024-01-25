@@ -81,7 +81,7 @@ export function createTable(results: any) {
 
     dataTable.push([
       `${runningDistance.toFixed(2)} ${store.conversion}`,
-      elevation * conversionFactor,
+      String(elevation * conversionFactor),
       color
     ]);
 

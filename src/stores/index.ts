@@ -1,3 +1,4 @@
+import { Color } from '@/utils';
 import { defineStore } from 'pinia';
 
 export const useAppStore = defineStore('app', {
@@ -13,7 +14,7 @@ export const useAppStore = defineStore('app', {
     distance: 0,
   }),
   actions: {
-    setCenter(loc: { geometry: { location: Location } }) {
+    setCenter(loc: { geometry: { location: Cords } }) {
       this.center = loc.geometry.location;
     },
     setDistance(distance: number) {
@@ -25,7 +26,7 @@ export const useAppStore = defineStore('app', {
         lng: loc.latLng.lng(),
       });
     },
-    updateMarker({ idx, latLng }: { idx: number; latLng: Location }) {
+    updateMarker({ idx, latLng }: { idx: number; latLng: Cords }) {
       this.markers.splice(idx, 1, latLng);
     },
     deleteMarker(idx: number) {
@@ -49,7 +50,10 @@ export const useAppStore = defineStore('app', {
     },
     gradeInfo(payload: { grade: number; elChange: number }) {
       this.grade = payload.grade;
-      this.el_change = payload.elChange;
+      this.elChange = payload.elChange;
     },
+  },
+  getters: {
+    storeColor: (state) => Color(state.grade),
   },
 });
