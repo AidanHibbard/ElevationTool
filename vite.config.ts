@@ -13,6 +13,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  /**
+    @see {https://github.com/NathanAP/vue-google-maps-community-fork#if-you-are-configuring-your-project-please-notice}
+  */
   optimizeDeps: {
     include: [
       'vue-google-maps-community-fork',
