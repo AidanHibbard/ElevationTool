@@ -125,7 +125,7 @@ onMounted(() => {
     };
   };
 
-  this.chartEvents = {if ()
+  this.chartEvents = {
     select: function () {
       self.chartMarker();
     },

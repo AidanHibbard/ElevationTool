@@ -1,24 +1,35 @@
+<script setup lang="ts">
+import { reactive } from 'vue';
+import { RouterView } from 'vue-router';
+import AppSettings from './components/AppSettings.vue';
+import { useAppStore } from './stores';
+const store = useAppStore();
+const state = reactive({
+  darkMode: false,
+  drawer: false,
+});
+</script>
+
 <template>
-  <v-app :class="[darkMode ? 'darkMode' : '']">
+  <v-app :class="[state.darkMode ? 'darkMode' : '']">
     <v-app-bar>
       <v-icon 
-        color="blue lighten-2"
+        color="blue-darken-2"
         id="settings-toggle"
-        @click="drawer = !drawer"
-      >
-        mdi-cog-outline
-      </v-icon>
+        @click="state.drawer = !state.drawer"
+        icon="mdi-cog-outline"
+      />
       <v-spacer />
       
       <GMapAutocomplete
         placeholder="Enter a place"
-        @place_changed="setCenter"
+        @place_changed="store.setCenter"
       />
       <v-btn 
         primary
         color="secondary"
         small
-        @click="clearMarkers"
+        @click="store.clearMarkers()"
         id="clearbtn"
       >
         Clear
@@ -28,11 +39,11 @@
     </v-app-bar>
 
     <v-navigation-drawer
-      v-model="drawer"
+      v-model="state.drawer"
       absolute
       temporary
     >
-      <Settings />
+      <AppSettings />
     </v-navigation-drawer>
     <v-main>
       <router-view/>
@@ -40,36 +51,11 @@
   </v-app>
 </template>
 
-<script>
-import { mapMutations, mapState } from 'vuex';
-import Settings from '@/components/Settings.vue';
-export default {
-  name: 'App',
-  components: {
-    Settings,
-  },
-  data: () => ({
-    drawer: false,
-    group: null,
-  }),
-  computed: {
-    ...mapState({
-      darkMode: (state) => state.darkMode,
-    }),
-  },
-  methods: {
-    ...mapMutations([
-      'setCenter',
-      'clearMarkers'
-    ]),
-  },
-};
-</script>
-
-<style>
+<style scoped>
 /* Keep Google Autocomplete below Nav */
+/* TODO: FIX */
 .pac-container {
-  margin-top: 20px;
+  top: 60px !important;
 }
 .pac-target-input {
   border: 1px solid black;
