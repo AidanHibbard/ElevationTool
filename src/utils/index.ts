@@ -15,9 +15,9 @@ export function Color(grade: number) {
     { threshold: 6, color: '#ffed3d' },
     { threshold: 9, color: '#f6252b' }
   ];
-  const above_grade = store.darkMode ? '#ffffff' : '#000000';
+  const aboveGrade = store.darkMode ? '#ffffff' : '#000000';
   const matchedColor = colorMap.find(color => grade < color.threshold);
-  return matchedColor ? matchedColor.color : above_grade;
+  return matchedColor ? matchedColor.color : aboveGrade;
 }
 
 export function mapGrade(rise: number, run: number): number {
@@ -41,7 +41,7 @@ export function computeDistance(route: any) {
         total = total / 1000;
     };
     distance = total;
-    return total.toFixed(2);
+    return Number(total.toFixed(2));
 };
 
 export function createTable(results: any) {

@@ -5,6 +5,7 @@ import ChartLegend from '@/components/ChartLegend.vue';
 import { computeDistance, createTable, Color } from '@/utils';
 import { useRoute } from 'vue-router';
 import { useAppStore } from '@/stores';
+import { reactive, watch } from 'vue';
 
 const store = useAppStore();
 
@@ -14,6 +15,7 @@ const state = reactive({
   locs: null,
   currentResults: [],
   polyline: [],
+  currentPath: [],
   chartOptions: {
     chart: {
       title: 'Elevation change',
@@ -34,174 +36,101 @@ function handleMarkerDrag(idx: number, e: { latLng: { lat: () => number, lng: ()
 }
 
 function createRoute() {
-      if (this.markers.length <= 1) { 
-        this.gradeInfo({
-          grade: 0,
-          el_change: 0
-        });
-        this.currentPath = [];
-        this.selectMarker = false;
-        this.distance = 0;
-        return;
-      };
+  if (store.markers.length <= 1) { 
+    store.gradeInfo({
+      grade: 0,
+      elChange: 0
+    });
+    state.currentPath = [];
+    state.selectMarker = false;
+    state.distance = 0;
+    return;
+  };
 
-      const directionsService = new window.google.maps.DirectionsService();
-      const elevationService = new window.google.maps.ElevationService();
-      const waypoints = this.markers.slice(1, -1).map((marker) => ({
-        location: {
-          lat: marker.lat,
-          lng: marker.lng
-        },
-      }));
+  const directionsService = new window.google.maps.DirectionsService();
+  const elevationService = new window.google.maps.ElevationService();
+  const waypoints = store.markers.slice(1, -1).map((marker: Cords) => ({
+    location: {
+      lat: marker.lat,
+      lng: marker.lng
+    },
+  }));
 
-      directionsService.route({
-        origin: this.markers[0],
-        waypoints: waypoints,
-        destination: this.markers[this.markers.length - 1],
-        travelMode: this.transitMode
-      }, (response) => {
-        if (response.status !== "OK") {
-          this.toggleError(true);
-          console.error(`No route found with transit mode: ${this.transitMode}`);
-          return;
-        };
-
-        this.toggleError(false);
-
-        const overviewPath = response.routes[0].overview_path;
-        const path = overviewPath.length < 2 ? this.markers : overviewPath;
-
-        this.polyline = window.google.maps.geometry.encoding.decodePath(
-          response.routes[0].overview_polyline
-        );
-      
-        this.distance = computeDistance(response.routes[0]);
-
-        elevationService.getElevationAlongPath({
-          path: path,
-          samples: 256
-        }, (results) => {
-          const { dataTable, locs } = createTable(results);          
-          this.currentResults = dataTable;
-          this.locs = locs;
-        });
-      });
-    }
-
-
-export default {
-  name: 'ElevationTool',
-  mounted () {
-    const self = this;
-    const route = useRoute();
-    const store = useStore();
-    if (route.params.polyline) {
-      const markers = decodePolyline(route.params.polyline);
-      if (markers.length > 1) {
-        this.$refs.mapRef.$mapPromise.then(() => {
-          store.state.center = markers[0];
-          store.state.markers = markers;
-        });
-      };
+  directionsService.route({
+    origin: store.markers[0],
+    waypoints: waypoints,
+    destination: store.markers[store.markers.length - 1],
+    travelMode: store.transitMode
+  }, (response: any) => {
+    if (response.status !== "OK") {
+      store.toggleError(true);
+      return;
     };
 
-    this.chartEvents = {
-      select: function () {
-        self.chartMarker();
-      },
-    };
-  },
-  watch: {
-    markers: {
-      handler() {
-        this.createRoute();
-      },
-      deep: true
-    },
-    transitMode() {
-      this.createRoute();
-    },
-    darkMode() {
-      this.$refs.mapRef.$mapPromise.then((map) => {
-        if (this.darkMode) {
-          map.setOptions({
-            styles: dark_style,
-          });
-        } else {
-          map.setOptions({
-            styles: [],
-          });
-        };
-      });
-    },
-  },
-  methods: {,
-    chartMarker: function () {
-      const event = this.$refs.gChart.chartObject.getSelection();
-      // Clicking out of bounds sends an undefined event
-      // Which unfortunetly breaks the chart
-      if (!event[0]) { return; };
-      // This should be revisited
-      // Creating a second locs array seems cumbersome
-      // Maybe it's the right way to do things
-      this.selectMarker = this.locs[event[0].row];
-    },
-    createRoute: function () {
-      if (this.markers.length <= 1) { 
-        this.gradeInfo({
-          grade: 0,
-          el_change: 0
-        });
-        this.currentPath = [];
-        this.selectMarker = false;
-        this.distance = 0;
-        return;
-      };
+    store.toggleError(false);
 
-      const directionsService = new window.google.maps.DirectionsService();
-      const elevationService = new window.google.maps.ElevationService();
-      const waypoints = this.markers.slice(1, -1).map((marker) => ({
-        location: {
-          lat: marker.lat,
-          lng: marker.lng
-        },
-      }));
+    const overviewPath = response.routes[0].overview_path;
+    const path = overviewPath.length < 2 ? store.markers : overviewPath;
 
-      directionsService.route({
-        origin: this.markers[0],
-        waypoints: waypoints,
-        destination: this.markers[this.markers.length - 1],
-        travelMode: this.transitMode
-      }, (response) => {
-        if (response.status !== "OK") {
-          this.toggleError(true);
-          console.error(`No route found with transit mode: ${this.transitMode}`);
-          return;
-        };
+    state.polyline = window.google.maps.geometry.encoding.decodePath(
+      response.routes[0].overview_polyline
+    );
+  
+    state.distance = computeDistance(response.routes[0]);
 
-        this.toggleError(false);
-
-        const overviewPath = response.routes[0].overview_path;
-        const path = overviewPath.length < 2 ? this.markers : overviewPath;
-
-        this.polyline = window.google.maps.geometry.encoding.decodePath(
-          response.routes[0].overview_polyline
-        );
-      
-        this.distance = computeDistance(response.routes[0]);
-
-        elevationService.getElevationAlongPath({
-          path: path,
-          samples: 256
-        }, (results) => {
-          const { dataTable, locs } = createTable(results);          
-          this.currentResults = dataTable;
-          this.locs = locs;
-        });
-      });
-    },
-  },
+    elevationService.getElevationAlongPath({
+      path: path,
+      samples: 256
+    }, (results: any) => {
+      const { dataTable, locs } = createTable(results);          
+      state.currentResults = dataTable;
+      state.locs = locs;
+    });
+  });
 };
+
+watch(store.markers, () => {
+  createRoute();
+}, { deep: true });
+
+watch(store.transitMode, () => {
+  createRoute();
+});
+
+watch(store.darkMode, (newValue) => {
+  this.$refs.mapRef.$mapPromise.then((map) => {
+    if (this.darkMode) {
+      map.setOptions({
+        styles: dark_style,
+      });
+    } else {
+      map.setOptions({
+        styles: [],
+      });
+    };
+  });
+});
+
+onMounted(() => {
+  const self = this;
+  const route = useRoute();
+  const store = useStore();
+  if (route.params.polyline) {
+    const markers = decodePolyline(route.params.polyline);
+    if (markers.length > 1) {
+      this.$refs.mapRef.$mapPromise.then(() => {
+        store.state.center = markers[0];
+        store.state.markers = markers;
+      });
+    };
+  };
+
+  this.chartEvents = {
+    select: function () {
+      self.chartMarker();
+    },
+  };
+});
 </script>
 
 <template>
@@ -253,14 +182,6 @@ export default {
     <div>
       <span v-if="store.markers.length > 1">Click along the chart line to drop a pin</span>
       <span v-if="store.markers.length <= 1">Drop a couple pins to get started</span>
-      <GChart 
-        v-if="store.markers.length > 1"
-        type="LineChart" 
-        :data="currentResults" 
-        :options="chartOptions" 
-        :events="chartEvents"
-        ref="gChart"
-      />
     </div>
   </div>
 </template>
