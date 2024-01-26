@@ -54,6 +54,6 @@ export const useAppStore = defineStore('app', {
     },
   },
   getters: {
-    storeColor: (state) => Color(state.grade),
+    strokeColor: (state) => Color(state.grade),
   },
 });

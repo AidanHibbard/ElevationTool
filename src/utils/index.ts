@@ -7,7 +7,7 @@ import { useAppStore }from '@/stores';
 
 let distance: number;
 
-export function Color(grade: number) {
+export function Color(grade: number): string {
   const store = useAppStore();
   const colorMap = [
     { threshold: 1, color: '#19a84c' },

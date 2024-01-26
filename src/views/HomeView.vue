@@ -138,7 +138,6 @@ onMounted(() => {
         :center="store.center"
         :zoom="15"
         map-type-id="terrain"
-        
         @click="store.addMarker"
         ref="mapRef"
     >
