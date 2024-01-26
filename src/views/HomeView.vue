@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { decode } from '@/utils';
+import { decode, computeDistance, createTable } from '@/utils';
 import ErrorBanner from '@/components/ErrorBanner.vue';
 import ChartLegend from '@/components/ChartLegend.vue';
-import { computeDistance, createTable, Color } from '@/utils';
 import { useRoute } from 'vue-router';
 import { useAppStore } from '@/stores';
-import { reactive, watch } from 'vue';
+import { onMounted, reactive, watch } from 'vue';
 
 const store = useAppStore();
 
@@ -31,7 +30,7 @@ function handleMarkerDrag(idx: number, e: { latLng: { lat: () => number, lng: ()
     lat: e.latLng.lat(),
     lng: e.latLng.lng(),
   };
-  updateMarker({ idx, latLng });
+  store.updateMarker({ idx, latLng });
   createRoute();
 }
 
@@ -89,15 +88,15 @@ function createRoute() {
   });
 };
 
-watch(store.markers, () => {
+watch(() => store.markers, () => {
   createRoute();
 }, { deep: true });
 
-watch(store.transitMode, () => {
+watch(() => store.transitMode, () => {
   createRoute();
 });
 
-watch(store.darkMode, (newValue) => {
+watch(() => store.darkMode, (newValue) => {
   this.$refs.mapRef.$mapPromise.then((map) => {
     if (this.darkMode) {
       map.setOptions({
@@ -112,24 +111,23 @@ watch(store.darkMode, (newValue) => {
 });
 
 onMounted(() => {
-  const self = this;
-  const route = useRoute();
-  const store = useStore();
-  if (route.params.polyline) {
-    const markers = decodePolyline(route.params.polyline);
-    if (markers.length > 1) {
-      this.$refs.mapRef.$mapPromise.then(() => {
-        store.state.center = markers[0];
-        store.state.markers = markers;
-      });
-    };
-  };
+//   const self = this;
+//   const route = useRoute();
+//   if (route.params.polyline) {
+//     const markers = decode(route.params.polyline);
+//     if (markers.length > 1) {
+//       this.$refs.mapRef.$mapPromise.then(() => {
+//         store.state.center = markers[0];
+//         store.state.markers = markers;
+//       });
+//     };
+//   };
 
-  this.chartEvents = {
-    select: function () {
-      self.chartMarker();
-    },
-  };
+//   this.chartEvents = {
+//     select: function () {
+//       self.chartMarker();
+//     },
+//   };
 });
 </script>
 
@@ -141,15 +139,15 @@ onMounted(() => {
         :zoom="15"
         map-type-id="terrain"
         
-        @click="store.addMarker"
+        @click="store.addMarker()"
         ref="mapRef"
     >
       <GMapMarker
-        v-if="selectMarker"
-        :position="selectMarker"
+        v-if="state.selectMarker"
+        :position="state.selectMarker"
         :draggable="false"
         :clickable="true"
-        @click="selectMarker = false"
+        @click="state.selectMarker = false"
       />
       <GMapMarker
         v-for="(m, idx) in store.markers"
@@ -162,12 +160,12 @@ onMounted(() => {
         @dragend="handleMarkerDrag(idx, $event)"
       />
       <GMapPolyline
-        v-if="store.markers.length > 1 && locs"
-        :path="locs"
+        v-if="store.markers.length > 1 && state.locs"
+        :path="state.locs"
         :editable="false"
         ref="polyline"
         :options="{
-          strokeColor,
+          strokeColor: store.strokeColor,
         }"
       />
     </GMapMap>
@@ -177,7 +175,7 @@ onMounted(() => {
       <span id="el_change"> {{ store.elChange }} {{ store.conversion === 'MI' ? 'feet' : 'meters' }} Elevation change</span>
       <br />
       <span id="grade">{{ store.grade }}% average grade</span>
-      <Legend />
+      <ChartLegend />
     </div>
     <div>
       <span v-if="store.markers.length > 1">Click along the chart line to drop a pin</span>
