@@ -139,7 +139,7 @@ onMounted(() => {
         :zoom="15"
         map-type-id="terrain"
         
-        @click="store.addMarker()"
+        @click="store.addMarker"
         ref="mapRef"
     >
       <GMapMarker
