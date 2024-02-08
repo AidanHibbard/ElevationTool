@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { decode, computeDistance, createTable } from '@/utils';
+import { decode, computeDistance, createTable, darkMapStyle } from '@/utils';
 import ErrorBanner from '@/components/ErrorBanner.vue';
 import ChartLegend from '@/components/ChartLegend.vue';
 import { useRoute } from 'vue-router';
 import { useAppStore } from '@/stores';
-import { onMounted, reactive, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 
 const store = useAppStore();
 
@@ -15,15 +15,9 @@ const state = reactive({
   currentResults: [],
   polyline: [],
   currentPath: [],
-  chartOptions: {
-    chart: {
-      title: 'Elevation change',
-      subtitles: 'Samples, Elevation',
-    },
-    tooltip: { isHtml: true }
-  },
-  chartEvents: null,
 });
+
+const map = ref(null);
 
 function handleMarkerDrag(idx: number, e: { latLng: { lat: () => number, lng: () => number } }) {
   const latLng = {
@@ -46,8 +40,8 @@ function createRoute() {
     return;
   };
 
-  const directionsService = new window.google.maps.DirectionsService();
-  const elevationService = new window.google.maps.ElevationService();
+  const directionsService = new (window as any).google.maps.DirectionsService();
+  const elevationService = new (window as any).google.maps.ElevationService();
   const waypoints = store.markers.slice(1, -1).map((marker: Cords) => ({
     location: {
       lat: marker.lat,
@@ -60,7 +54,7 @@ function createRoute() {
     waypoints: waypoints,
     destination: store.markers[store.markers.length - 1],
     travelMode: store.transitMode
-  }, (response: any) => {
+  }, (response: { status: string, routes: any }) => {
     if (response.status !== "OK") {
       store.toggleError(true);
       return;
@@ -71,7 +65,7 @@ function createRoute() {
     const overviewPath = response.routes[0].overview_path;
     const path = overviewPath.length < 2 ? store.markers : overviewPath;
 
-    state.polyline = window.google.maps.geometry.encoding.decodePath(
+    state.polyline = (window as any).google.maps.geometry.encoding.decodePath(
       response.routes[0].overview_polyline
     );
   
@@ -96,38 +90,32 @@ watch(() => store.transitMode, () => {
   createRoute();
 });
 
-watch(() => store.darkMode, (newValue) => {
-  this.$refs.mapRef.$mapPromise.then((map) => {
-    if (this.darkMode) {
-      map.setOptions({
-        styles: dark_style,
+watch(() => store.darkMode, async () => {
+  if (map.value) {
+    const mapInstance = await (map.value as any).$mapPromise;
+    if (store.darkMode) {
+      mapInstance.setOptions({
+        styles: darkMapStyle,
       });
     } else {
-      map.setOptions({
+      mapInstance.setOptions({
         styles: [],
       });
     };
-  });
+  };
 });
 
 onMounted(() => {
-//   const self = this;
-//   const route = useRoute();
-//   if (route.params.polyline) {
-//     const markers = decode(route.params.polyline);
-//     if (markers.length > 1) {
-//       this.$refs.mapRef.$mapPromise.then(() => {
-//         store.state.center = markers[0];
-//         store.state.markers = markers;
-//       });
-//     };
-//   };
-
-//   this.chartEvents = {
-//     select: function () {
-//       self.chartMarker();
-//     },
-//   };
+  const route = useRoute();
+  if (route.params.polyline) {
+    const markers = decode(route.params.polyline);
+    if (markers.length > 1) {
+      this.$refs.mapRef.$mapPromise.then(() => {
+        store.center = markers[0];
+        store.markers = markers;
+      });
+    };
+  };
 });
 </script>
 
@@ -171,7 +159,7 @@ onMounted(() => {
     <div id="grade_info">
       <span id="info">{{ store.distance }}</span> {{ store.conversion }}
       <br />
-      <span id="el_change"> {{ store.elChange }} {{ store.conversion === 'MI' ? 'feet' : 'meters' }} Elevation change</span>
+      <span id="el_change"> {{ store.elevationChange }} {{ store.conversion === 'MI' ? 'feet' : 'meters' }} Elevation change</span>
       <br />
       <span id="grade">{{ store.grade }}% average grade</span>
       <ChartLegend />

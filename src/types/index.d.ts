@@ -3,14 +3,6 @@ interface Cords {
   lng: number;
 }
 
-interface AppState {
-  center: Cords;
-  markers: Location[];
-  error: boolean;
-  darkMode: boolean;
-  conversion: string;
-  transitMode: string;
-  grade: number;
-  elChange: number;
-  distance: number;
-}
+type TransitMode = 'TRANSIT' | 'WALKING' | 'DRIVING' | 'BICYCLING';
+
+type ConversionSystem = 'MI' | 'KM';

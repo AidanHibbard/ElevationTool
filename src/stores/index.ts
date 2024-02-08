@@ -1,59 +1,90 @@
 import { Color } from '@/utils';
 import { defineStore } from 'pinia';
+import { ref, type Ref, computed } from 'vue';
 
-export const useAppStore = defineStore('app', {
-  state: (): AppState => ({
-    center: { lat: 45.551289, lng: 14.724260 },
-    markers: [],
-    error: false,
-    darkMode: false,
-    conversion: 'MI',
-    transitMode: 'DRIVING',
-    grade: 0,
-    elChange: 0,
-    distance: 0,
-  }),
-  actions: {
-    setCenter(loc: { geometry: { location: Cords } }) {
-      this.center = loc.geometry.location;
-    },
-    setDistance(distance: number) {
-      this.distance = distance;
-    },
-    addMarker(loc: { latLng: { lat: () => Cords['lat']; lng: () => Cords['lng'] } }) {
-      this.markers.push({
-        lat: loc.latLng.lat(),
-        lng: loc.latLng.lng(),
-      });
-    },
-    updateMarker({ idx, latLng }: { idx: number; latLng: Cords }) {
-      this.markers.splice(idx, 1, latLng);
-    },
-    deleteMarker(idx: number) {
-      this.markers.splice(idx, 1);
-    },
-    clearMarkers() {
-      this.error = false;
-      this.markers = [];
-    },
-    toggleTheme() {
-      this.darkMode = !this.darkMode;
-    },
-    toggleConversion(system: string) {
-      this.conversion = system;
-    },
-    toggleTransit(type: string) {
-      this.transitMode = type;
-    },
-    toggleError(bool: boolean) {
-      this.error = bool;
-    },
-    gradeInfo(payload: { grade: number; elChange: number }) {
-      this.grade = payload.grade;
-      this.elChange = payload.elChange;
-    },
-  },
-  getters: {
-    strokeColor: (state) => Color(state.grade),
-  },
+export const useAppStore = defineStore('app', () => {
+  const center: Ref<Cords> = ref({ lat: 45.551289, lng: 14.724260 });
+  const markers: Ref<Cords[]> = ref([]);
+  const error = ref(false);
+  const darkMode = ref(false);
+  const conversion: Ref<ConversionSystem> = ref('MI');
+  const transitMode: Ref<TransitMode> = ref('DRIVING');
+  const grade = ref(0);
+  const elevationChange = ref(0);
+  const distance = ref(0);
+
+  const strokeColor = computed(() => Color(grade.value));
+
+  function setCenter(loc: { geometry: { location: Cords } }) {
+    center.value = loc.geometry.location;
+  };
+
+  function setDistance(length: number) {
+    distance.value = length;
+  };
+  
+  function addMarker(loc: { latLng: { lat: () => Cords['lat']; lng: () => Cords['lng'] } }) {
+    markers.value.push({
+      lat: loc.latLng.lat(),
+      lng: loc.latLng.lng(),
+    });
+  };
+
+  function updateMarker({ idx, latLng }: { idx: number; latLng: Cords }) {
+    markers.value.splice(idx, 1, latLng);
+  };
+
+  function deleteMarker(idx: number) {
+    markers.value.splice(idx, 1);
+  };
+
+  function clearMarkers() {
+    error.value = false;
+    markers.value = [];
+  };
+
+  function toggleTheme() {
+    darkMode.value = !darkMode.value;
+  };
+
+  function toggleConversion(system: ConversionSystem) {
+    conversion.value = system;
+  };
+
+  function toggleTransit(type: TransitMode) {
+    transitMode.value = type;
+  };
+
+  function toggleError(state: boolean) {
+    error.value = state;
+  };
+
+  function gradeInfo(payload: { grade: number; elChange: number }) {
+    grade.value = payload.grade;
+    elevationChange.value = payload.elChange;
+  };
+
+  return {
+    center,
+    markers,
+    error,
+    darkMode,
+    conversion,
+    transitMode,
+    grade,
+    elevationChange,
+    distance,
+    strokeColor,
+    setCenter,
+    setDistance,
+    addMarker,
+    updateMarker,
+    deleteMarker,
+    clearMarkers,
+    toggleTheme,
+    toggleConversion,
+    toggleTransit,
+    toggleError,
+    gradeInfo,
+  };
 });

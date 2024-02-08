@@ -3,6 +3,9 @@ export {
   encode,
   decode,
 } from './polyline';
+export {
+  darkMapStyle,
+} from './map/dark';
 import { useAppStore }from '@/stores';
 
 let distance: number;
