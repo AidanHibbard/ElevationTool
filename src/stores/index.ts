@@ -9,6 +9,7 @@ export const useAppStore = defineStore('app', () => {
   const darkMode = ref(false);
   const conversion: Ref<ConversionSystem> = ref('MI');
   const transitMode: Ref<TransitMode> = ref('DRIVING');
+  const chartData = ref([]);
   const grade = ref(0);
   const elevationChange = ref(0);
   const distance = ref(0);
@@ -23,7 +24,7 @@ export const useAppStore = defineStore('app', () => {
     distance.value = length;
   };
   
-  function addMarker(loc: { latLng: { lat: () => Cords['lat']; lng: () => Cords['lng'] } }) {
+  function addMarker(loc: { latLng: { lat: () => Cords['lat']; lng: () => Cords['lng']; } }) {
     markers.value.push({
       lat: loc.latLng.lat(),
       lng: loc.latLng.lng(),
@@ -59,9 +60,9 @@ export const useAppStore = defineStore('app', () => {
     error.value = state;
   };
 
-  function gradeInfo(payload: { grade: number; elChange: number }) {
+  function gradeInfo(payload: { grade: number; elevationChange: number }) {
     grade.value = payload.grade;
-    elevationChange.value = payload.elChange;
+    elevationChange.value = payload.elevationChange;
   };
 
   return {
@@ -74,6 +75,7 @@ export const useAppStore = defineStore('app', () => {
     grade,
     elevationChange,
     distance,
+    chartData,
     strokeColor,
     setCenter,
     setDistance,

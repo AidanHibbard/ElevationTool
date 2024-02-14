@@ -15,8 +15,10 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "chart.js": "^4.4.1",
     "pinia": "^2.1.7",
     "vue": "^3.3.11",
+    "vue-chartjs": "^5.3.0",
     "vue-google-maps-community-fork": "^0.3.1",
     "vue-router": "^4.2.5",
     "vuetify": "^3.5.1"

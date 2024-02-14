@@ -6,9 +6,7 @@ export {
 export {
   darkMapStyle,
 } from './map/dark';
-import { useAppStore }from '@/stores';
-
-let distance: number;
+import { useAppStore } from '@/stores';
 
 export function Color(grade: number): string {
   const store = useAppStore();
@@ -21,19 +19,18 @@ export function Color(grade: number): string {
   const aboveGrade = store.darkMode ? '#ffffff' : '#000000';
   const matchedColor = colorMap.find(color => grade < color.threshold);
   return matchedColor ? matchedColor.color : aboveGrade;
-}
+};
 
 export function mapGrade(rise: number, run: number): number {
 	return Number((rise/run*100).toFixed(2));
-}
+};
 
 // TODO: Dont use any
 export function computeDistance(route: any) {
   const store = useAppStore();
     const unit = store.conversion;
     let total = 0;
-    // TODO: Dont use any
-    route.legs.forEach((leg: any) => {
+    route.legs.forEach((leg: { distance: { value: number } }) => {
         total += leg.distance.value;
     });
     if (unit === 'MI') {
@@ -43,7 +40,7 @@ export function computeDistance(route: any) {
         // Convert from meters to kilometers
         total = total / 1000;
     };
-    distance = total;
+    store.distance = total;
     return Number(total.toFixed(2));
 };
 
@@ -52,8 +49,8 @@ export function createTable(results: any) {
   const dataTable = [['Distance', 'Elevation', { role: 'style' }]];
   const locs = [];
   const prev = 8;
-  const sampleDistance = distance / 256;
-  const portionLength = (distance * (store.conversion === 'MI' ? 1609 : 1000)) / (256 / prev);
+  const sampleDistance = store.distance / 256;
+  const portionLength = (store.distance * (store.conversion === 'MI' ? 1609 : 1000)) / (256 / prev);
   let runningDistance = 0;
   let minEl: number = results[0].elevation;
   let maxEl = 0;
@@ -74,7 +71,7 @@ export function createTable(results: any) {
     let portion = mapGrade(elevation - prevElevation, portionLength);
     if (i <= prev - 1) {
       portion = mapGrade(nextElevation - elevation, portionLength);
-    }
+    };
 
     runningDistance += sampleDistance;
 
@@ -95,11 +92,11 @@ export function createTable(results: any) {
   };
   minEl *= conversionFactor;
   maxEl *= conversionFactor;
-  const elChange = Number((maxEl - minEl).toFixed(0));
-  const grade = Number((elChange/(distance * (store.conversion === 'MI' ? 5280 : 1000))*100).toFixed(2));
+  const elevationChange = Number((maxEl - minEl).toFixed(0));
+  const grade = Number((elevationChange/(store.distance * (store.conversion === 'MI' ? 5280 : 1000))*100).toFixed(2));
   store.gradeInfo({
-    elChange,
+    elevationChange,
     grade
-  })
+  });
   return { dataTable, locs };
 };

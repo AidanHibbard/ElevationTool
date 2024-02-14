@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import { decode, computeDistance, createTable, darkMapStyle } from '@/utils';
 import ErrorBanner from '@/components/ErrorBanner.vue';
-import ChartLegend from '@/components/ChartLegend.vue';
+import RouteInfo from '@/components/RouteInfo.vue';
 import { useRoute } from 'vue-router';
 import { useAppStore } from '@/stores';
 import { onMounted, reactive, ref, watch } from 'vue';
 
+interface State {
+  selectMarker: boolean | Cords;
+  distance: number;
+  locs: null | Cords[];
+  currentResults: any[];
+  polyline: any;
+  currentPath: any;
+};
+
 const store = useAppStore();
 
-const state = reactive({
+const state: State = reactive({
   selectMarker: false,
   distance: 0,
   locs: null,
@@ -32,7 +41,7 @@ function createRoute() {
   if (store.markers.length <= 1) { 
     store.gradeInfo({
       grade: 0,
-      elChange: 0
+      elevationChange: 0
     });
     state.currentPath = [];
     state.selectMarker = false;
@@ -105,12 +114,13 @@ watch(() => store.darkMode, async () => {
   };
 });
 
-onMounted(() => {
+onMounted(async () => {
   const route = useRoute();
   if (route.params.polyline) {
+    const mapInstance = await (map.value as any).$mapPromise;
     const markers = decode(route.params.polyline);
     if (markers.length > 1) {
-      this.$refs.mapRef.$mapPromise.then(() => {
+      (mapInstance as any).$mapPromise.then(() => {
         store.center = markers[0];
         store.markers = markers;
       });
@@ -156,18 +166,9 @@ onMounted(() => {
         }"
       />
     </GMapMap>
-    <div id="grade_info">
-      <span id="info">{{ store.distance }}</span> {{ store.conversion }}
-      <br />
-      <span id="el_change"> {{ store.elevationChange }} {{ store.conversion === 'MI' ? 'feet' : 'meters' }} Elevation change</span>
-      <br />
-      <span id="grade">{{ store.grade }}% average grade</span>
-      <ChartLegend />
-    </div>
-    <div>
-      <span v-if="store.markers.length > 1">Click along the chart line to drop a pin</span>
-      <span v-if="store.markers.length <= 1">Drop a couple pins to get started</span>
-    </div>
+    <RouteInfo 
+      :data="store.chartData"
+    />
   </div>
 </template>
 
