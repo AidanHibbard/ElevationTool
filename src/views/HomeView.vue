@@ -118,7 +118,7 @@ onMounted(async () => {
   const route = useRoute();
   if (route.params.polyline) {
     const mapInstance = await (map.value as any).$mapPromise;
-    const markers = decode(route.params.polyline);
+    const markers = decode(route.params.polyline as string);
     if (markers.length > 1) {
       (mapInstance as any).$mapPromise.then(() => {
         store.center = markers[0];
@@ -167,7 +167,7 @@ onMounted(async () => {
       />
     </GMapMap>
     <RouteInfo 
-      :data="store.chartData"
+
     />
   </div>
 </template>
