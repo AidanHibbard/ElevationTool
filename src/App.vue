@@ -22,7 +22,7 @@ const state = reactive({
       <v-spacer />
       
       <GMapAutocomplete
-        placeholder="Enter a place"
+        @placeholder="'Enter a place'"
         @place_changed="store.setCenter"
       />
       <v-btn 
@@ -55,7 +55,7 @@ const state = reactive({
 /* Keep Google Autocomplete below Nav */
 /* TODO: FIX */
 .pac-container {
-  top: 60px !important;
+  top: 10rem !important;
 }
 .pac-target-input {
   border: 1px solid black;

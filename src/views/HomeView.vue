@@ -28,7 +28,7 @@ const state: State = reactive({
 
 const map = ref(null);
 
-function handleMarkerDrag(idx: number, e: { latLng: { lat: () => number, lng: () => number } }) {
+const handleMarkerDrag = (idx: number, e: { latLng: { lat: () => number, lng: () => number } }) => {
   const latLng = {
     lat: e.latLng.lat(),
     lng: e.latLng.lng(),

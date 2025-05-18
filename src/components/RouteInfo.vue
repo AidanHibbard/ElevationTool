@@ -27,6 +27,3 @@ const store = useAppStore();
     />
   </div>
 </template>
-
-<style scoped>
-</style>

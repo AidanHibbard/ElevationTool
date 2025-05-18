@@ -16,51 +16,51 @@ export const useAppStore = defineStore('app', () => {
 
   const strokeColor = computed(() => Color(grade.value));
 
-  function setCenter(loc: { geometry: { location: Cords } }) {
+  const setCenter = (loc: { geometry: { location: Cords } }) => {
     center.value = loc.geometry.location;
   };
 
-  function setDistance(length: number) {
+  const setDistance = (length: number) => {
     distance.value = length;
   };
   
-  function addMarker(loc: { latLng: { lat: () => Cords['lat']; lng: () => Cords['lng']; } }) {
+  const addMarker = (loc: { latLng: { lat: () => Cords['lat']; lng: () => Cords['lng']; } }) => {
     markers.value.push({
       lat: loc.latLng.lat(),
       lng: loc.latLng.lng(),
     });
   };
 
-  function updateMarker({ idx, latLng }: { idx: number; latLng: Cords }) {
+  const updateMarker = ({ idx, latLng }: { idx: number; latLng: Cords }) => {
     markers.value.splice(idx, 1, latLng);
   };
 
-  function deleteMarker(idx: number) {
+  const deleteMarker = (idx: number) => {
     markers.value.splice(idx, 1);
   };
 
-  function clearMarkers() {
+  const clearMarkers = () => {
     error.value = false;
     markers.value = [];
   };
 
-  function toggleTheme() {
+  const toggleTheme = () => {
     darkMode.value = !darkMode.value;
   };
 
-  function toggleConversion(system: ConversionSystem) {
+  const toggleConversion = (system: ConversionSystem) => {
     conversion.value = system;
   };
 
-  function toggleTransit(type: TransitMode) {
+  const toggleTransit = (type: TransitMode) => {
     transitMode.value = type;
   };
 
-  function toggleError(state: boolean) {
+  const toggleError = (state: boolean) => {
     error.value = state;
   };
 
-  function gradeInfo(payload: { grade: number; elevationChange: number }) {
+  const gradeInfo = (payload: { grade: number; elevationChange: number }) => {
     grade.value = payload.grade;
     elevationChange.value = payload.elevationChange;
   };
