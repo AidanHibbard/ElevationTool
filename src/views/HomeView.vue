@@ -20,8 +20,6 @@ const store = useAppStore();
 const state: State = reactive({
   selectMarker: false,
   distance: 0,
-  locs: null,
-  currentResults: [],
   polyline: [],
   currentPath: [],
 });
@@ -84,9 +82,9 @@ function createRoute() {
       path: path,
       samples: 256
     }, (results: any) => {
-      const { dataTable, locs } = createTable(results);          
-      state.currentResults = dataTable;
-      state.locs = locs;
+      const { dataTable, locs } = createTable(results);
+      store.currentResults = dataTable;
+      store.locs = locs;
     });
   });
 };
@@ -158,8 +156,8 @@ onMounted(async () => {
         @dragend="handleMarkerDrag(idx, $event)"
       />
       <GMapPolyline
-        v-if="store.markers.length > 1 && state.locs"
-        :path="state.locs"
+        v-if="store.markers.length > 1 && store.locs.length > 1"
+        :path="store.locs"
         :editable="false"
         ref="polyline"
         :options="{
@@ -167,7 +165,7 @@ onMounted(async () => {
         }"
       />
     </GMapMap>
-    <RouteInfo />
+    <RouteInfo v-if="store.markers.length > 1" />
   </div>
 </template>
 

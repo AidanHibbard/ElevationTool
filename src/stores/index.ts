@@ -1,6 +1,7 @@
 import { Color } from '@/utils';
 import { defineStore } from 'pinia';
 import { ref, type Ref, computed } from 'vue';
+import { useRouteQuery } from '@vueuse/router'
 
 export const useAppStore = defineStore('app', () => {
   const center: Ref<Cords> = ref({ lat: 45.551289, lng: 14.724260 });
@@ -9,12 +10,19 @@ export const useAppStore = defineStore('app', () => {
   const darkMode = ref(false);
   const conversion: Ref<ConversionSystem> = ref('MI');
   const transitMode: Ref<TransitMode> = ref('DRIVING');
+  const currentResults = ref([]);
+  const locs = ref([])
   const chartData = ref([]);
   const grade = ref(0);
   const elevationChange = ref(0);
   const distance = ref(0);
+  const encoded = useRouteQuery<string>('encoded', '')
 
   const strokeColor = computed(() => Color(grade.value));
+
+  const setSelectMarker = (loc: Cords) => {
+    console.log(loc)
+  }
 
   const setCenter = (loc: { geometry: { location: Cords } }) => {
     center.value = loc.geometry.location;
@@ -68,6 +76,8 @@ export const useAppStore = defineStore('app', () => {
   return {
     center,
     markers,
+    currentResults,
+    encoded,
     error,
     darkMode,
     conversion,
@@ -77,6 +87,7 @@ export const useAppStore = defineStore('app', () => {
     distance,
     chartData,
     strokeColor,
+    locs,
     setCenter,
     setDistance,
     addMarker,
@@ -88,5 +99,6 @@ export const useAppStore = defineStore('app', () => {
     toggleTransit,
     toggleError,
     gradeInfo,
+    setSelectMarker,
   };
 });
