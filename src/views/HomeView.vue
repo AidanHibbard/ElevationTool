@@ -116,6 +116,7 @@ watch(() => store.darkMode, async () => {
 
 onMounted(async () => {
   const route = useRoute();
+  console.log("POLYLINE", route)
   if (route.params.polyline) {
     const mapInstance = await (map.value as any).$mapPromise;
     const markers = decode(route.params.polyline as string);
@@ -166,9 +167,7 @@ onMounted(async () => {
         }"
       />
     </GMapMap>
-    <RouteInfo 
-
-    />
+    <RouteInfo />
   </div>
 </template>
 
