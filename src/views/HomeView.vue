@@ -139,11 +139,11 @@ onMounted(async () => {
         ref="mapRef"
     >
       <GMapMarker
-        v-if="state.selectMarker"
-        :position="state.selectMarker"
+        v-if="store.selectMarker"
+        :position="store.selectMarker"
         :draggable="false"
         :clickable="true"
-        @click="state.selectMarker = false"
+        @click="store.selectMarker = null"
       />
       <GMapMarker
         v-for="(m, idx) in store.markers"
@@ -165,6 +165,7 @@ onMounted(async () => {
         }"
       />
     </GMapMap>
+        {{ store.selectMarker }}
     <RouteInfo v-if="store.markers.length > 1" />
   </div>
 </template>

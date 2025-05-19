@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, defineProps, onBeforeUnmount } from 'vue'
 import { Chart, ChartConfiguration, registerables } from 'chart.js'
+import { useAppStore } from '@/stores'
+
+const store = useAppStore()
 
 Chart.register(...registerables)
 
 const props = defineProps<{
   labels: string[]
   data: number[]
-  onPointHover: (index: number) => void
 }>()
 
 const canvasRef = ref<HTMLCanvasElement>()
@@ -54,13 +56,12 @@ onMounted(() => {
       hover: {
         mode: 'nearest',
         intersect: true,
-        onClick(event, activeItems) {
-          if (activeItems.length > 0) {
-            const idx = activeItems[0].index as number
-            props.onPointHover(idx)
-          }
-        },
       },
+      onClick: (event, activeElements) => {
+        if (activeElements.length && (activeElements[0] && activeElements[0].index)) {
+          store.setSelectMarker(activeElements[0].index)
+        }
+      }
     },
   }
 

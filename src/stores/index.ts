@@ -17,11 +17,12 @@ export const useAppStore = defineStore('app', () => {
   const elevationChange = ref(0);
   const distance = ref(0);
   const encoded = useRouteQuery<string>('encoded', '')
+  const selectMarker = ref<null | Cords>(null)
 
   const strokeColor = computed(() => Color(grade.value));
 
-  const setSelectMarker = (loc: Cords) => {
-    console.log(loc)
+  const setSelectMarker = (idx: number) => {
+    selectMarker.value = locs.value[idx]
   }
 
   const setCenter = (loc: { geometry: { location: Cords } }) => {
