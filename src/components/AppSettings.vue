@@ -5,12 +5,12 @@ import { ref } from 'vue';
 
 const store = useAppStore();
 
-const link = ref('');
+const link = ref('')
 
 async function shareHill() {
   try {
-    const baseUrl = `${window.location.href.split('#/')[0]}#/`;
-    await navigator.clipboard.writeText(`${baseUrl}${generatePolyline(store.markers)}`)
+    store.encoded = generatePolyline(store.markers)
+    await navigator.clipboard.writeText(window.location.href)
     alert('Copied link!');
   } catch (e: unknown) {
     alert(`Failed to create link: ${e}`);
@@ -100,7 +100,7 @@ function saveHill() {
       </v-list-item-title>
     </v-list-item>
     <v-list-item class="links"
-      v-if="store.markers.length > 1 && link.length === 0"
+      v-if="store.markers.length > 1 && link"
       @click="saveHill"
     >
       <v-list-item-title>

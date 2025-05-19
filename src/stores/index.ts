@@ -9,15 +9,15 @@ export const useAppStore = defineStore('app', () => {
   const error = ref(false);
   const darkMode = ref(false);
   const conversion: Ref<ConversionSystem> = ref('MI');
-  const transitMode: Ref<TransitMode> = ref('DRIVING');
+  const transitMode = useRouteQuery<TransitMode>('transitMode', ref('DRIVING'));
   const currentResults = ref([]);
   const locs = ref([])
   const chartData = ref([]);
   const grade = ref(0);
   const elevationChange = ref(0);
   const distance = ref(0);
-  const encoded = useRouteQuery<string>('encoded', '')
-  const selectMarker = ref<null | Cords>(null)
+  const encoded = useRouteQuery<string>('encoded', '');
+  const selectMarker = ref<null | Cords>(null);
 
   const strokeColor = computed(() => Color(grade.value));
 
