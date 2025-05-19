@@ -2,11 +2,8 @@
 import { decode, computeDistance, createTable, darkMapStyle } from '@/utils';
 import ErrorBanner from '@/components/ErrorBanner.vue';
 import RouteInfo from '@/components/RouteInfo.vue';
-import { useRoute } from 'vue-router';
 import { useAppStore } from '@/stores';
-import { reactive, ref, watch } from 'vue';
-
-const route = useRoute();
+import { reactive, ref, watch, onMounted } from 'vue';
 
 interface State {
   selectMarker: boolean | Cords;
@@ -113,8 +110,14 @@ watch(() => store.darkMode, async () => {
     };
   };
 });
-//   store.markers = decode(route.hash.replace('#/', '') as string);
-  // store.center = store.markers[0]
+
+onMounted(async () => {
+  const decoded = decode(store.encoded)
+  await (map.value as any).$mapPromise
+  
+  store.markers = decoded
+  store.center = decoded[0]
+})
 </script>
 
 <template>
