@@ -10,8 +10,8 @@ export const useAppStore = defineStore('app', () => {
   const darkMode = ref(false);
   const conversion: Ref<ConversionSystem> = ref('MI');
   const transitMode = useRouteQuery<TransitMode>('transitMode', ref('DRIVING'));
-  const currentResults = ref([]);
-  const locs = ref([])
+  const currentResults = ref<(string | { role: string; })[][]>([]);
+  const locs = ref<Cords[]>([])
   const chartData = ref([]);
   const grade = ref(0);
   const elevationChange = ref(0);
@@ -21,8 +21,8 @@ export const useAppStore = defineStore('app', () => {
 
   const strokeColor = computed(() => Color(grade.value));
 
-  const setSelectMarker = (idx: number) => {
-    selectMarker.value = locs.value[idx]
+  const setSelectMarker = (loc: Cords) => {
+    selectMarker.value = loc;
   }
 
   const setCenter = (loc: { geometry: { location: Cords } }) => {

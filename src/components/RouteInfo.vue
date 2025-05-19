@@ -13,7 +13,7 @@ const elevations = computed(() =>
 )
 
 const handleHover = (idx: number) => {
-  const loc = store.currentResults.locs[idx]
+  const loc = store.locs[idx]
   store.setSelectMarker(loc)
 }
 </script>

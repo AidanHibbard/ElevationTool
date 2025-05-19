@@ -8,8 +8,6 @@ import { reactive, ref, watch, onMounted } from 'vue';
 interface State {
   selectMarker: boolean | Cords;
   distance: number;
-  locs: null | Cords[];
-  currentResults: any[];
   polyline: any;
   currentPath: any;
 };
@@ -112,11 +110,13 @@ watch(() => store.darkMode, async () => {
 });
 
 onMounted(async () => {
-  const decoded = decode(store.encoded)
-  await (map.value as any).$mapPromise
-  
-  store.markers = decoded
-  store.center = decoded[0]
+  if (store.encoded){ 
+    const decoded = decode(store.encoded)
+    await (map.value as any).$mapPromise
+    
+    store.markers = decoded
+    store.center = decoded[0]
+  }
 })
 </script>
 

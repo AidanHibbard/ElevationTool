@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, defineProps, onBeforeUnmount } from 'vue'
-import { Chart, ChartConfiguration, registerables } from 'chart.js'
+import { Chart, type ChartConfiguration, registerables } from 'chart.js'
 import { useAppStore } from '@/stores'
 
 const store = useAppStore()
@@ -59,7 +59,7 @@ onMounted(() => {
       },
       onClick: (event, activeElements) => {
         if (activeElements.length && (activeElements[0] && activeElements[0].index)) {
-          store.setSelectMarker(activeElements[0].index)
+          store.setSelectMarker(store.locs[activeElements[0].index])
         }
       }
     },
