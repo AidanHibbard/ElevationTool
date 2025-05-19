@@ -89,6 +89,7 @@ export const useAppStore = defineStore('app', () => {
     chartData,
     strokeColor,
     locs,
+    selectMarker,
     setCenter,
     setDistance,
     addMarker,

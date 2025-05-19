@@ -165,7 +165,6 @@ onMounted(async () => {
         }"
       />
     </GMapMap>
-        {{ store.selectMarker }}
     <RouteInfo v-if="store.markers.length > 1" />
   </div>
 </template>
