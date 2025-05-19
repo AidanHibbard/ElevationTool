@@ -4,7 +4,9 @@ import ErrorBanner from '@/components/ErrorBanner.vue';
 import RouteInfo from '@/components/RouteInfo.vue';
 import { useRoute } from 'vue-router';
 import { useAppStore } from '@/stores';
-import { onMounted, reactive, ref, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
+
+const route = useRoute();
 
 interface State {
   selectMarker: boolean | Cords;
@@ -111,21 +113,8 @@ watch(() => store.darkMode, async () => {
     };
   };
 });
-
-onMounted(async () => {
-  const route = useRoute();
-  console.log("POLYLINE", route)
-  if (route.params.polyline) {
-    const mapInstance = await (map.value as any).$mapPromise;
-    const markers = decode(route.params.polyline as string);
-    if (markers.length > 1) {
-      (mapInstance as any).$mapPromise.then(() => {
-        store.center = markers[0];
-        store.markers = markers;
-      });
-    };
-  };
-});
+//   store.markers = decode(route.hash.replace('#/', '') as string);
+  // store.center = store.markers[0]
 </script>
 
 <template>
@@ -136,7 +125,7 @@ onMounted(async () => {
         :zoom="15"
         map-type-id="terrain"
         @click="store.addMarker"
-        ref="mapRef"
+        ref="map"
     >
       <GMapMarker
         v-if="store.selectMarker"

@@ -51,6 +51,7 @@ export const useAppStore = defineStore('app', () => {
   const clearMarkers = () => {
     error.value = false;
     markers.value = [];
+    selectMarker.value = null;
   };
 
   const toggleTheme = () => {
